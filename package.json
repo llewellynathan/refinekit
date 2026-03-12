@@ -1,0 +1,33 @@
+{
+  "name": "refiner",
+  "version": "0.1.0",
+  "description": "Visual annotation overlay for HTML/CSS design critique",
+  "main": "dist/refiner.js",
+  "module": "dist/refiner.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "design",
+    "annotation",
+    "overlay",
+    "critique",
+    "html",
+    "css"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.2",
+    "rollup": "^4.31.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.3"
+  }
+}
