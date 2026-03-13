@@ -17,6 +17,8 @@ export interface Settings {
 export class SettingsPanel {
   readonly el: HTMLElement;
   private visible = false;
+  private mcpDot!: HTMLElement;
+  private mcpLabel!: HTMLElement;
   private settings: Settings = {
     clearOnCopy: false,
     blockInteractions: true,
@@ -100,6 +102,23 @@ export class SettingsPanel {
         this.emitChange();
       },
     ));
+
+    this.el.appendChild(this.createDivider());
+
+    // MCP status
+    const mcpRow = document.createElement('div');
+    mcpRow.className = 'settings-mcp-row';
+
+    this.mcpDot = document.createElement('span');
+    this.mcpDot.className = 'settings-mcp-dot disconnected';
+
+    this.mcpLabel = document.createElement('span');
+    this.mcpLabel.className = 'settings-check-label';
+    this.mcpLabel.textContent = 'MCP Disconnected';
+
+    mcpRow.appendChild(this.mcpDot);
+    mcpRow.appendChild(this.mcpLabel);
+    this.el.appendChild(mcpRow);
   }
 
   private createCheckbox(label: string, initial: boolean, onChange: (v: boolean) => void): HTMLElement {
@@ -143,6 +162,11 @@ export class SettingsPanel {
 
   isVisible(): boolean {
     return this.visible;
+  }
+
+  setMcpStatus(connected: boolean): void {
+    this.mcpDot.className = `settings-mcp-dot ${connected ? 'connected' : 'disconnected'}`;
+    this.mcpLabel.textContent = connected ? 'MCP Connected' : 'MCP Disconnected';
   }
 
   getSettings(): Settings {

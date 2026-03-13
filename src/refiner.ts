@@ -7,6 +7,7 @@ import { AnnotationDialog } from './annotation-dialog';
 import { AnnotationMarkers } from './annotation-marker';
 import { SettingsPanel } from './settings';
 import { generateSelector } from './selector';
+import { McpBridge } from './mcp-bridge';
 
 export class Refiner {
   private host: HTMLDivElement;
@@ -17,6 +18,7 @@ export class Refiner {
   private dialog: AnnotationDialog;
   private markers: AnnotationMarkers;
   private settings: SettingsPanel;
+  private mcpBridge: McpBridge | null = null;
   private currentTarget: Element | null = null;
   private currentRect: DOMRect | null = null;
   private clearOnCopy = false;
@@ -98,6 +100,14 @@ export class Refiner {
     this.store.on('resolve', () => this.toolbar.updateCount(this.store.getCount()));
     this.store.on('remove', () => this.toolbar.updateCount(this.store.getCount()));
 
+    // MCP bridge (auto-discover by default)
+    if (options.mcpEnabled !== false) {
+      this.mcpBridge = new McpBridge(this.store, options.mcpPort);
+      this.mcpBridge.onChange = (connected) => {
+        this.settings.setMcpStatus(connected);
+      };
+    }
+
     // Mount
     document.body.appendChild(this.host);
 
@@ -117,6 +127,7 @@ export class Refiner {
   }
 
   destroy(): void {
+    this.mcpBridge?.destroy();
     this.host.remove();
   }
 

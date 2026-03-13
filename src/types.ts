@@ -10,4 +10,6 @@ export interface Annotation {
 export interface RefinerOptions {
   enabled?: boolean;
   position?: 'left' | 'right';
+  mcpPort?: number;
+  mcpEnabled?: boolean;
 }

@@ -11,8 +11,10 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     const script = document.currentScript as HTMLScriptElement | null;
     const position = (script?.dataset.refinerPosition as 'left' | 'right') ?? 'right';
     const enabled = script?.dataset.refinerEnabled !== 'false';
+    const mcpPort = script?.dataset.refinerMcpPort ? parseInt(script.dataset.refinerMcpPort, 10) : undefined;
+    const mcpEnabled = script?.dataset.refinerMcpEnabled !== 'false';
 
-    const refiner = new Refiner({ position, enabled });
+    const refiner = new Refiner({ position, enabled, mcpPort, mcpEnabled });
     (window as any).__refiner = refiner;
   };
 
