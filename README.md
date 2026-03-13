@@ -1,41 +1,30 @@
-# reFiner
+# refinekit
 
-Leave visual feedback directly on any web page. Click an element, type what should change, and reFiner saves your notes as structured annotations that AI coding tools can read and act on.
+Leave visual feedback directly on any web page. Click an element, type what should change, and refinekit saves your notes as structured annotations that AI coding tools can read and act on.
 
-## Getting started
+## Install
 
-### Bookmarklet (easiest — works on any page)
+### With Claude Code (recommended)
 
-Drag this link to your bookmarks bar:
+If you're using [Claude Code](https://claude.com/claude-code), tell it:
 
-> **[+ reFiner](javascript:void(function(){var%20s=document.createElement('script');s.src='https://unpkg.com/refinekit/dist/refiner.js';document.body.appendChild(s)})())**
+> Add refinekit to my HTML files
 
-Then visit any web page and click the bookmark. The reFiner toolbar appears instantly. That's it.
-
-<details>
-<summary>How to add a bookmarklet (step by step)</summary>
-
-1. Make sure your bookmarks bar is visible (in Chrome: `View > Show Bookmarks Bar`, in Safari: `View > Show Favorites Bar`)
-2. Drag the **+ reFiner** link above into your bookmarks bar
-3. Go to any web page you want to annotate
-4. Click the **+ reFiner** bookmark — the toolbar appears
-
-If dragging doesn't work in your browser, you can create the bookmark manually:
-1. Create a new bookmark (right-click the bookmarks bar > "Add page..." or "Add bookmark...")
-2. Set the name to `reFiner`
-3. Set the URL to: `javascript:void(function(){var%20s=document.createElement('script');s.src='https://unpkg.com/refinekit/dist/refiner.js';document.body.appendChild(s)})()`
-
-</details>
-
-### Claude Code (automatic)
-
-If you're using [Claude Code](https://claude.com/claude-code), just type:
+Claude Code will add the script tag to your HTML files for you. You can also use the built-in skill:
 
 ```
-/refiner
+/refinekit
 ```
 
-Claude Code detects your project and installs reFiner for you.
+### Manually
+
+Add this line to your HTML file, just before the closing `</body>` tag:
+
+```html
+<script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
+```
+
+Open the file in your browser and the refinekit toolbar will appear in the bottom-right corner.
 
 ## How to use it
 
@@ -78,19 +67,9 @@ Issue: Change this color to blue and add more padding
 - **Clear on copy** — automatically remove annotations after copying them
 - **Block page interactions** — prevents you from accidentally clicking links or buttons while annotating (on by default)
 
-## Using reFiner with Claude Code
+## Using refinekit with Claude Code
 
-[Claude Code](https://claude.com/claude-code) is an AI coding tool that can read your reFiner annotations and make the changes for you.
-
-### Quick setup
-
-If you already have Claude Code installed, just type:
-
-```
-/refiner
-```
-
-Claude Code will detect your project and add reFiner for you automatically.
+[Claude Code](https://claude.com/claude-code) is an AI coding tool that can read your refinekit annotations and make the changes for you.
 
 ### Autonomous design critique
 
@@ -104,13 +83,13 @@ Claude opens your page in a browser and drives through it like a design reviewer
 
 ### Real-time sync with MCP
 
-By default, you copy annotations and paste them into Claude Code. But you can skip the copy-paste entirely by running the reFiner MCP server:
+By default, you copy annotations and paste them into Claude Code. But you can skip the copy-paste entirely by running the refinekit MCP server:
 
 ```bash
 npx refinekit-mcp server
 ```
 
-Once running, annotations flow directly to Claude Code as you add them. The settings panel in reFiner will show "MCP Connected" to confirm the link is active.
+Once running, annotations flow directly to Claude Code as you add them. The settings panel will show "MCP Connected" to confirm the link is active.
 
 To make this permanent in Claude Code:
 
@@ -131,15 +110,7 @@ You watch Session 1 critique the design while Session 2 implements the fixes —
 
 ## Advanced
 
-Everything below is for developers who want more control over reFiner.
-
-### Script tag install
-
-Add this line before the closing `</body>` tag in your HTML file:
-
-```html
-<script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
-```
+Everything below is for developers who want more control over refinekit.
 
 ### npm install
 
@@ -245,7 +216,7 @@ npx refinekit-mcp doctor
 
 ```bash
 # From the refiner project directory
-ln -sf "$(pwd)/skills/refiner" ~/.claude/skills/refiner
+ln -sf "$(pwd)/skills/refinekit" ~/.claude/skills/refinekit
 ln -sf "$(pwd)/skills/refiner-self-driving" ~/.claude/skills/refiner-self-driving
 ```
 
