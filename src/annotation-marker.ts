@@ -1,4 +1,4 @@
-import { Annotation, CATEGORIES } from './types';
+import { Annotation } from './types';
 import { AnnotationStore } from './annotation-store';
 
 interface MarkerElement {
@@ -10,34 +10,29 @@ export class AnnotationMarkers {
   private markers: Map<string, MarkerElement> = new Map();
   private container: HTMLElement;
   private rafId: number | null = null;
+  private color = '#7C3AED';
 
   constructor(private root: ShadowRoot, private store: AnnotationStore) {
     this.container = document.createElement('div');
     this.container.className = 'refiner-markers';
     root.appendChild(this.container);
 
-    // Listen to store events
     store.on('add', (annotation) => this.addMarker(annotation));
     store.on('resolve', (annotation) => this.updateMarker(annotation));
     store.on('remove', (annotation) => this.removeMarker(annotation.id));
 
-    // Reposition on scroll/resize
     const reposition = () => this.repositionAll();
     window.addEventListener('scroll', reposition, { passive: true });
     window.addEventListener('resize', reposition, { passive: true });
   }
 
   private addMarker(annotation: Annotation): void {
-    const cat = CATEGORIES.find((c) => c.id === annotation.category);
-    const color = cat?.color ?? '#94A3B8';
-
     const el = document.createElement('div');
     el.className = 'refiner-marker';
     el.setAttribute('data-annotation-marker', annotation.id);
     el.setAttribute('data-resolved', String(annotation.resolved));
-    el.style.background = color;
+    el.style.background = this.color;
 
-    // Number
     const index = this.markers.size + 1;
     el.textContent = String(index);
 
@@ -98,7 +93,6 @@ export class AnnotationMarkers {
   private renumber(): void {
     let i = 1;
     for (const [, marker] of this.markers) {
-      // Set text of marker (but not tooltip children)
       const firstText = marker.el.childNodes[0];
       if (firstText && firstText.nodeType === Node.TEXT_NODE) {
         firstText.textContent = String(i);
@@ -108,14 +102,12 @@ export class AnnotationMarkers {
   }
 
   private positionMarker(el: HTMLElement, annotation: Annotation): void {
-    // Try to find the element by selector and use live position
     const target = this.queryTarget(annotation.targetSelector);
     if (target) {
       const rect = target.getBoundingClientRect();
       el.style.top = `${rect.top - 8}px`;
       el.style.left = `${rect.right - 8}px`;
     } else {
-      // Fallback to stored rect
       el.style.top = `${annotation.targetRect.y - 8}px`;
       el.style.left = `${annotation.targetRect.x + annotation.targetRect.width - 8}px`;
     }
@@ -126,6 +118,19 @@ export class AnnotationMarkers {
       return document.querySelector(selector);
     } catch {
       return null;
+    }
+  }
+
+  setColor(color: string): void {
+    this.color = color;
+    for (const [, marker] of this.markers) {
+      marker.el.style.background = color;
+    }
+  }
+
+  clearAll(): void {
+    for (const [id] of this.markers) {
+      this.removeMarker(id);
     }
   }
 

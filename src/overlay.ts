@@ -1,12 +1,10 @@
-import { CATEGORIES, AnnotationCategory } from './types';
-
 export class Overlay {
   readonly el: HTMLElement;
   private highlight: HTMLElement;
   private enabled = true;
   private blocking = true;
   private currentTarget: Element | null = null;
-  private category: AnnotationCategory = 'general';
+  private highlightColor = '#7C3AED';
 
   onClick?: (target: Element, rect: DOMRect) => void;
 
@@ -28,13 +26,9 @@ export class Overlay {
   }
 
   private isOverOwnUI(x: number, y: number): boolean {
-    // Check if the point hits any Refiner UI element inside the shadow root
-    // (toolbar, dialog, markers) by testing shadow root's elementFromPoint
     const shadowEl = this.root.elementFromPoint(x, y);
     if (!shadowEl) return false;
-    // If it hits the overlay itself, that's not "own UI" — that's the transparent layer
     if (shadowEl === this.el || shadowEl === this.highlight) return false;
-    // Anything else inside the shadow root is our UI
     return true;
   }
 
@@ -54,7 +48,6 @@ export class Overlay {
 
   private handleClick = (e: MouseEvent): void => {
     if (!this.enabled) return;
-    // Let clicks on Refiner's own UI (toolbar, dialog, markers) pass through
     if (this.isOverOwnUI(e.clientX, e.clientY)) return;
 
     e.preventDefault();
@@ -68,7 +61,6 @@ export class Overlay {
   };
 
   private getElementAt(x: number, y: number): Element | null {
-    // Temporarily hide overlay + highlight to do hit test
     this.el.style.pointerEvents = 'none';
     this.highlight.style.pointerEvents = 'none';
 
@@ -77,22 +69,18 @@ export class Overlay {
     this.el.style.pointerEvents = '';
     this.highlight.style.pointerEvents = '';
 
-    // Ignore our own shadow host
     if (el && el === this.root.host) return null;
     return el;
   }
 
   private showHighlight(target: Element): void {
     const rect = target.getBoundingClientRect();
-    const catConfig = CATEGORIES.find((c) => c.id === this.category);
-    const color = catConfig?.color ?? '#94A3B8';
-
     this.highlight.style.display = 'block';
     this.highlight.style.top = `${rect.top - 2}px`;
     this.highlight.style.left = `${rect.left - 2}px`;
     this.highlight.style.width = `${rect.width + 4}px`;
     this.highlight.style.height = `${rect.height + 4}px`;
-    this.highlight.style.borderColor = color;
+    this.highlight.style.borderColor = this.highlightColor;
   }
 
   private hideHighlight(): void {
@@ -100,8 +88,8 @@ export class Overlay {
     this.currentTarget = null;
   }
 
-  setCategory(category: AnnotationCategory): void {
-    this.category = category;
+  setHighlightColor(color: string): void {
+    this.highlightColor = color;
   }
 
   setBlocking(blocking: boolean): void {

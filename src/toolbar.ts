@@ -1,144 +1,179 @@
-import { CATEGORIES, AnnotationCategory } from './types';
-
 export class Toolbar {
   readonly el: HTMLElement;
-  private collapsed = false;
-  private blocking = true;
-  private selectedCategory: AnnotationCategory = 'general';
+  private collapsed = true;
   private countBadge!: HTMLElement;
-  private blockBtn!: HTMLElement;
+  private expandBadge!: HTMLElement;
+  private innerEl!: HTMLElement;
+  private copyBtn!: HTMLElement;
+  private clearBtn!: HTMLElement;
+  private toggleBtn!: HTMLElement;
+  private settingsOpen = false;
 
-  onCategoryChange?: (category: AnnotationCategory) => void;
-  onBlockingChange?: (blocking: boolean) => void;
   onCopy?: () => void;
-  onExport?: () => void;
+  onClear?: () => void;
+  onSettings?: () => void;
+  onCollapse?: () => void;
 
-  constructor(private root: ShadowRoot, position: 'left' | 'right' = 'right') {
+  constructor(private root: ShadowRoot) {
     this.el = document.createElement('div');
     this.el.className = 'refiner-toolbar';
     this.el.setAttribute('data-refiner-toolbar', '');
-    this.el.setAttribute('data-position', position);
-    this.el.setAttribute('data-collapsed', 'false');
+    this.el.setAttribute('data-collapsed', 'true');
     this.render();
     root.appendChild(this.el);
+
+    // Expand on first load after a short delay
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.collapsed = false;
+        this.el.setAttribute('data-collapsed', 'false');
+        this.updateBadgeVisibility();
+      });
+    });
   }
 
   private render(): void {
-    // Toggle button
-    const toggle = document.createElement('button');
-    toggle.className = 'toolbar-toggle';
-    toggle.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
-    toggle.addEventListener('click', () => this.toggleCollapse());
-    this.el.appendChild(toggle);
+    const pill = document.createElement('div');
+    pill.className = 'toolbar-pill';
 
-    // Body
-    const body = document.createElement('div');
-    body.className = 'toolbar-body';
+    // Inner (collapsible buttons)
+    this.innerEl = document.createElement('div');
+    this.innerEl.className = 'toolbar-inner';
 
-    // Count
-    const countRow = document.createElement('div');
-    countRow.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:2px 2px;';
-    const countLabel = document.createElement('span');
-    countLabel.className = 'toolbar-label';
-    countLabel.textContent = 'Notes';
+    // Note count
     this.countBadge = document.createElement('span');
-    this.countBadge.className = 'badge';
+    this.countBadge.className = 'toolbar-count';
     this.countBadge.textContent = '0';
-    countRow.appendChild(countLabel);
-    countRow.appendChild(this.countBadge);
-    body.appendChild(countRow);
+    this.innerEl.appendChild(this.createBtn(
+      this.countBadge,
+      'Annotations',
+      null,
+    ));
+
+    // Copy
+    const copyIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+    const checkIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    this.copyBtn = this.createBtn(
+      copyIcon,
+      'Copy annotations',
+      () => {
+        if (this.copyBtn.classList.contains('disabled')) return;
+        this.onCopy?.();
+        this.copyBtn.querySelector('.toolbar-icon')!.innerHTML = checkIcon;
+        setTimeout(() => {
+          this.copyBtn.querySelector('.toolbar-icon')!.innerHTML = copyIcon;
+        }, 1500);
+      },
+    );
+    this.copyBtn.classList.add('disabled');
+    this.innerEl.appendChild(this.copyBtn);
+
+    // Clear all
+    this.clearBtn = this.createBtn(
+      `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
+      'Clear all',
+      () => {
+        if (this.clearBtn.classList.contains('disabled')) return;
+        this.onClear?.();
+      },
+    );
+    this.clearBtn.classList.add('disabled');
+    this.innerEl.appendChild(this.clearBtn);
+
+    // Settings
+    this.innerEl.appendChild(this.createBtn(
+      `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+      'Settings',
+      () => this.onSettings?.(),
+    ));
 
     // Divider
-    body.appendChild(this.createDivider());
+    const divider = document.createElement('div');
+    divider.className = 'toolbar-divider';
+    this.innerEl.appendChild(divider);
 
-    // Category label
-    const catLabel = document.createElement('span');
-    catLabel.className = 'toolbar-label';
-    catLabel.textContent = 'Category';
-    body.appendChild(catLabel);
+    pill.appendChild(this.innerEl);
 
-    // Category grid
-    const grid = document.createElement('div');
-    grid.className = 'category-grid';
-    for (const cat of CATEGORIES) {
-      const btn = document.createElement('button');
-      btn.className = 'category-btn';
-      btn.style.background = cat.color;
-      btn.title = cat.label;
-      btn.setAttribute('data-category', cat.id);
-      btn.setAttribute('data-selected', cat.id === this.selectedCategory ? 'true' : 'false');
-      btn.addEventListener('click', () => {
-        this.selectedCategory = cat.id;
-        grid.querySelectorAll('.category-btn').forEach((b) =>
-          (b as HTMLElement).setAttribute('data-selected', 'false')
-        );
-        btn.setAttribute('data-selected', 'true');
-        this.onCategoryChange?.(cat.id);
-      });
-      grid.appendChild(btn);
-    }
-    body.appendChild(grid);
+    // Toggle button (always visible — pen when collapsed, X when expanded)
+    const penIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+    const xIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
-    // Divider
-    body.appendChild(this.createDivider());
+    this.toggleBtn = this.createBtn(
+      penIcon,
+      '',
+      () => this.toggleCollapse(),
+    );
+    this.toggleBtn.classList.add('toolbar-toggle-btn');
+    pill.appendChild(this.toggleBtn);
 
-    // Block interactions button
-    this.blockBtn = document.createElement('button');
-    this.blockBtn.className = 'toolbar-action active';
-    this.blockBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Block`;
-    this.blockBtn.addEventListener('click', () => {
-      this.blocking = !this.blocking;
-      this.blockBtn.classList.toggle('active', this.blocking);
-      this.onBlockingChange?.(this.blocking);
+    // Badge for collapsed state
+    this.expandBadge = document.createElement('span');
+    this.expandBadge.className = 'toolbar-expand-badge hidden';
+    this.expandBadge.textContent = '0';
+    pill.appendChild(this.expandBadge);
+
+    this.el.appendChild(pill);
+
+    // Update toggle icon on transition end
+    this.el.addEventListener('transitionend', () => {
+      const icon = this.toggleBtn.querySelector('.toolbar-icon')!;
+      icon.innerHTML = this.collapsed ? penIcon : xIcon;
     });
-    body.appendChild(this.blockBtn);
-
-    // Copy button
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'toolbar-action';
-    copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
-    copyBtn.addEventListener('click', () => {
-      this.onCopy?.();
-      const original = copyBtn.innerHTML;
-      copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Copied`;
-      copyBtn.classList.add('active');
-      setTimeout(() => {
-        copyBtn.innerHTML = original;
-        copyBtn.classList.remove('active');
-      }, 1500);
-    });
-    body.appendChild(copyBtn);
-
-    // Export button
-    const exportBtn = document.createElement('button');
-    exportBtn.className = 'toolbar-action';
-    exportBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export`;
-    exportBtn.addEventListener('click', () => this.onExport?.());
-    body.appendChild(exportBtn);
-
-    this.el.appendChild(body);
   }
 
-  private createDivider(): HTMLElement {
-    const div = document.createElement('div');
-    div.className = 'toolbar-divider';
-    return div;
+  private createBtn(content: string | HTMLElement, tooltip: string, onClick: (() => void) | null): HTMLElement {
+    const btn = document.createElement('button');
+    btn.className = 'toolbar-btn';
+
+    const iconWrap = document.createElement('span');
+    iconWrap.className = 'toolbar-icon';
+    if (typeof content === 'string') {
+      iconWrap.innerHTML = content;
+    } else {
+      iconWrap.appendChild(content);
+    }
+    btn.appendChild(iconWrap);
+
+    if (tooltip) {
+      const tip = document.createElement('span');
+      tip.className = 'toolbar-tooltip';
+      tip.textContent = tooltip;
+      btn.appendChild(tip);
+    }
+
+    if (onClick) {
+      btn.addEventListener('click', onClick);
+    }
+
+    return btn;
   }
 
   private toggleCollapse(): void {
     this.collapsed = !this.collapsed;
     this.el.setAttribute('data-collapsed', String(this.collapsed));
+    this.updateBadgeVisibility();
+    if (this.collapsed) {
+      this.onCollapse?.();
+    }
   }
 
-  getSelectedCategory(): AnnotationCategory {
-    return this.selectedCategory;
-  }
-
-  isBlocking(): boolean {
-    return this.blocking;
+  setSettingsOpen(open: boolean): void {
+    this.settingsOpen = open;
+    this.el.classList.toggle('tooltips-hidden', open);
   }
 
   updateCount(count: number): void {
     this.countBadge.textContent = String(count);
+    this.expandBadge.textContent = String(count);
+    this.updateBadgeVisibility(count);
+
+    const empty = count === 0;
+    this.copyBtn.classList.toggle('disabled', empty);
+    this.clearBtn.classList.toggle('disabled', empty);
+  }
+
+  private updateBadgeVisibility(count?: number): void {
+    const c = count ?? parseInt(this.expandBadge.textContent || '0', 10);
+    this.expandBadge.classList.toggle('hidden', c === 0 || !this.collapsed);
   }
 }

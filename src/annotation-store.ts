@@ -1,4 +1,4 @@
-import { Annotation, AnnotationCategory } from './types';
+import { Annotation } from './types';
 
 type Listener = (annotation: Annotation) => void;
 
@@ -6,7 +6,7 @@ export class AnnotationStore {
   private annotations: Map<string, Annotation> = new Map();
   private listeners: Map<string, Set<Listener>> = new Map();
 
-  add(targetSelector: string, targetRect: DOMRect, category: AnnotationCategory, text: string): Annotation {
+  add(targetSelector: string, targetRect: DOMRect, text: string): Annotation {
     const annotation: Annotation = {
       id: crypto.randomUUID(),
       targetSelector,
@@ -16,7 +16,6 @@ export class AnnotationStore {
         width: targetRect.width,
         height: targetRect.height,
       },
-      category,
       text,
       timestamp: Date.now(),
       resolved: false,
