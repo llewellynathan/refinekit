@@ -53,6 +53,11 @@ export class Refiner {
     this.toolbar.onCollapse = () => {
       this.settings.hide();
       this.toolbar.setSettingsOpen(false);
+      this.overlay.setEnabled(false);
+    };
+
+    this.toolbar.onExpand = () => {
+      this.overlay.setEnabled(true);
     };
 
     // Wire up settings

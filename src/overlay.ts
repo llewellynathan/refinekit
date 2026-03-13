@@ -23,6 +23,8 @@ export class Overlay {
     this.el.addEventListener('mousemove', this.handleMouseMove);
     this.el.addEventListener('click', this.handleClick);
     this.el.addEventListener('mouseleave', () => this.hideHighlight());
+
+    document.addEventListener('keydown', this.handleKeyBlock, true);
   }
 
   private isOverOwnUI(x: number, y: number): boolean {
@@ -58,6 +60,16 @@ export class Overlay {
       const rect = target.getBoundingClientRect();
       this.onClick?.(target, rect);
     }
+  };
+
+  private handleKeyBlock = (e: KeyboardEvent): void => {
+    if (!this.enabled || !this.blocking) return;
+    // Allow keys when focus is inside refiner's own UI (e.g. annotation dialog textarea)
+    const target = e.target as Element;
+    if (target && (target === this.root.host || this.root.host.contains(target))) return;
+
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   private getElementAt(x: number, y: number): Element | null {
