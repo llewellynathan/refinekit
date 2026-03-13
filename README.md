@@ -18,7 +18,7 @@ reFiner stays out of the way. It doesn't change your page's appearance or break 
 Open your HTML file and paste this line just before the closing `</body>` tag:
 
 ```html
-<script src="https://unpkg.com/re-finer/dist/refiner.js"></script>
+<script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
 ```
 
 Your file should look something like this:
@@ -32,7 +32,7 @@ Your file should look something like this:
   <body>
     <!-- your page content here -->
 
-    <script src="https://unpkg.com/re-finer/dist/refiner.js"></script>
+    <script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
   </body>
 </html>
 ```
@@ -116,7 +116,7 @@ Claude opens your page in a browser and drives through it like a design reviewer
 By default, you copy annotations and paste them into Claude Code. But you can skip the copy-paste entirely by running the reFiner MCP server:
 
 ```bash
-npx re-finer-mcp server
+npx refinekit-mcp server
 ```
 
 Once running, annotations flow directly to Claude Code as you add them. The settings panel in reFiner will show "MCP Connected" to confirm the link is active.
@@ -124,7 +124,7 @@ Once running, annotations flow directly to Claude Code as you add them. The sett
 To make this permanent in Claude Code:
 
 ```bash
-npx re-finer-mcp init
+npx refinekit-mcp init
 ```
 
 ### Two-session workflow
@@ -145,11 +145,11 @@ Everything below is for developers who want more control over reFiner.
 ### npm install
 
 ```bash
-npm install re-finer
+npm install refinekit
 ```
 
 ```js
-import { Refiner } from 're-finer';
+import { Refiner } from 'refinekit';
 
 const refiner = new Refiner();
 ```
@@ -160,11 +160,11 @@ const refiner = new Refiner();
 
 ```html
 <script
-  src="https://unpkg.com/re-finer/dist/refiner.js"
+  src="https://unpkg.com/refinekit/dist/refiner.js"
   data-refiner-enabled="true"
   data-refiner-position="right"
-  data-re-finer-mcp-enabled="true"
-  data-re-finer-mcp-port="4848"
+  data-refinekit-mcp-enabled="true"
+  data-refinekit-mcp-port="4848"
 ></script>
 ```
 
@@ -172,8 +172,8 @@ const refiner = new Refiner();
 |-----------|--------|---------|-------------|
 | `data-refiner-enabled` | `true` / `false` | `true` | Whether to activate on load |
 | `data-refiner-position` | `left` / `right` | `right` | Which side of the viewport |
-| `data-re-finer-mcp-enabled` | `true` / `false` | `true` | Auto-discover MCP server |
-| `data-re-finer-mcp-port` | number | `4848` | MCP server HTTP port |
+| `data-refinekit-mcp-enabled` | `true` / `false` | `true` | Auto-discover MCP server |
+| `data-refinekit-mcp-port` | number | `4848` | MCP server HTTP port |
 
 #### Constructor options
 
@@ -239,7 +239,7 @@ r.clearAnnotations();    // removes all annotations
 #### Verify setup
 
 ```bash
-npx re-finer-mcp doctor
+npx refinekit-mcp doctor
 ```
 
 ### Installing Claude Code skills manually
