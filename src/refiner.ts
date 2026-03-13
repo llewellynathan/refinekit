@@ -144,7 +144,13 @@ export class Refiner {
     if (annotations.length === 0) return 'No annotations.';
 
     const pageTitle = document.title || window.location.pathname;
-    const lines: string[] = [`# Design Annotations — ${pageTitle}`, ''];
+    const pathname = window.location.pathname;
+    const filename = pathname.substring(pathname.lastIndexOf('/') + 1) || 'index.html';
+    const lines: string[] = [
+      `# Design Annotations — ${pageTitle}`,
+      `**File:** \`${filename}\``,
+      '',
+    ];
 
     for (let i = 0; i < annotations.length; i++) {
       const a = annotations[i];
