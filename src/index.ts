@@ -1,8 +1,8 @@
 import { Refiner } from './refiner';
-import type { Annotation, AnnotationCategory, RefinerOptions } from './types';
+import type { Annotation, RefinerOptions } from './types';
 
 export { Refiner };
-export type { Annotation, AnnotationCategory, RefinerOptions };
+export type { Annotation, RefinerOptions };
 
 // Auto-initialize when loaded via script tag
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
