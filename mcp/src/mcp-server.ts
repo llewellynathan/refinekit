@@ -8,7 +8,7 @@ export class RefinerMcpServer {
 
   constructor(private store: Store) {
     this.mcp = new McpServer({
-      name: 'refiner-mcp',
+      name: 're-finer-mcp',
       version: '0.1.0',
     });
 

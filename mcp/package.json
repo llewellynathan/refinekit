@@ -1,11 +1,11 @@
 {
-  "name": "refiner-mcp",
+  "name": "re-finer-mcp",
   "version": "0.1.0",
   "description": "MCP server for Refiner — real-time annotation sync between browser and AI agents",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "refiner-mcp": "./dist/cli.js"
+    "re-finer-mcp": "./dist/cli.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
