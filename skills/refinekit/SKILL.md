@@ -7,33 +7,33 @@ description: Add refinekit visual annotation overlay to a plain HTML/CSS project
 
 Add the refinekit annotation toolbar to this project.
 
+## Usage
+
+- `/refinekit index.html` — install on a specific file
+- `/refinekit` — prompted to choose which file(s)
+
 ## Steps
 
-1. **Check if already installed**
-   - Search for `refinekit` or `refiner.js` script tags in HTML files
-   - If found, report that refinekit is already set up and exit
-
-2. **Detect project type**
-   - Plain HTML: has `.html` files in root or `src/` or `public/`
+1. **Determine target files**
+   - If the user provided a filename argument (e.g. `/refinekit index.html`), use that file only
+   - Otherwise, find all `.html` files in root, `src/`, and `public/`
    - If this is a React/Next.js project, suggest using Agentation instead
-   - If no HTML files found, ask the user which file to add refinekit to
+   - List the HTML files found and ask the user which ones to install on — let them pick one, several, or all
+   - If no HTML files found, ask the user to provide a path
+
+2. **Check if already installed**
+   - For each target file, search for `refinekit` or `refiner.js` script tags
+   - Skip any file that already has it and tell the user
 
 3. **Add the script tag**
 
-   Add this before the closing `</body>` tag in every HTML file:
+   Add this before the closing `</body>` tag in each target file:
    ```html
    <script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
    ```
 
-   Optional configuration via data attributes:
-   ```html
-   <script src="https://unpkg.com/refinekit/dist/refiner.js"
-     data-refiner-position="right"
-     data-refiner-enabled="true"></script>
-   ```
-
 4. **Confirm setup**
-   - Tell the user to open the HTML file in a browser
+   - Tell the user to open the file in a browser
    - The refinekit toolbar should appear on the right edge of the viewport
    - Click any element to add an annotation
    - Use the copy button to export annotations as markdown
