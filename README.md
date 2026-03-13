@@ -2,60 +2,53 @@
 
 Leave visual feedback directly on any web page. Click an element, type what should change, and reFiner saves your notes as structured annotations that AI coding tools can read and act on.
 
-## What it does
-
-1. You add a single line to your HTML file
-2. A small toolbar appears on your page
-3. Click any element to leave a note about what should change
-4. Copy all your notes and paste them into an AI coding tool like [Claude Code](https://claude.com/claude-code) — it knows exactly which elements to fix
-
-reFiner stays out of the way. It doesn't change your page's appearance or break any styles.
-
 ## Getting started
 
-### Step 1: Add reFiner to your page
+### Bookmarklet (easiest — works on any page)
 
-Open your HTML file and paste this line just before the closing `</body>` tag:
+Drag this link to your bookmarks bar:
 
-```html
-<script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
+> **[+ reFiner](javascript:void(function(){var%20s=document.createElement('script');s.src='https://unpkg.com/refinekit/dist/refiner.js';document.body.appendChild(s)})())**
+
+Then visit any web page and click the bookmark. The reFiner toolbar appears instantly. That's it.
+
+<details>
+<summary>How to add a bookmarklet (step by step)</summary>
+
+1. Make sure your bookmarks bar is visible (in Chrome: `View > Show Bookmarks Bar`, in Safari: `View > Show Favorites Bar`)
+2. Drag the **+ reFiner** link above into your bookmarks bar
+3. Go to any web page you want to annotate
+4. Click the **+ reFiner** bookmark — the toolbar appears
+
+If dragging doesn't work in your browser, you can create the bookmark manually:
+1. Create a new bookmark (right-click the bookmarks bar > "Add page..." or "Add bookmark...")
+2. Set the name to `reFiner`
+3. Set the URL to: `javascript:void(function(){var%20s=document.createElement('script');s.src='https://unpkg.com/refinekit/dist/refiner.js';document.body.appendChild(s)})()`
+
+</details>
+
+### Claude Code (automatic)
+
+If you're using [Claude Code](https://claude.com/claude-code), just type:
+
+```
+/refiner
 ```
 
-Your file should look something like this:
+Claude Code detects your project and installs reFiner for you.
 
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>My Page</title>
-  </head>
-  <body>
-    <!-- your page content here -->
+## How to use it
 
-    <script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
-  </body>
-</html>
-```
-
-### Step 2: Open your page in a browser
-
-Open the HTML file in Chrome, Safari, Firefox, or any modern browser. You'll see a small pen icon in the bottom-right corner — that's the reFiner toolbar.
-
-### Step 3: Start annotating
-
-1. Click the **pen icon** to expand the toolbar
+1. Click the **pen icon** in the bottom-right corner to expand the toolbar
 2. Click any element on the page — a heading, a button, an image, anything
-3. A dialog appears. Type what should change (e.g. "Make this font bigger" or "Change this color to blue")
+3. Type what should change (e.g. "Make this font bigger" or "Change this color to blue")
 4. Click **Add** (or press `Cmd+Enter` on Mac / `Ctrl+Enter` on Windows)
-5. A numbered marker appears on the element
+5. A numbered marker appears on the element — repeat for as many elements as you'd like
+6. Click the **copy icon** in the toolbar to copy all your annotations
 
-Repeat for as many elements as you'd like to annotate.
+Paste the copied annotations into [Claude Code](https://claude.com/claude-code) or any AI coding tool. It will know exactly which elements to change and what to do.
 
-### Step 4: Copy your annotations
-
-Click the **copy icon** in the toolbar. All your annotations are copied to your clipboard as a formatted list, ready to paste into Claude Code or any AI coding assistant.
-
-What gets copied looks like this:
+### What gets copied
 
 ```
 # Design Annotations — My Page Title
@@ -68,8 +61,6 @@ Issue: Make this font bigger and bolder
 Element: #hero > .cta-button
 Issue: Change this color to blue and add more padding
 ```
-
-The AI agent uses the element selectors to find and fix exactly the right elements in your code.
 
 ## Toolbar guide
 
@@ -142,6 +133,14 @@ You watch Session 1 critique the design while Session 2 implements the fixes —
 
 Everything below is for developers who want more control over reFiner.
 
+### Script tag install
+
+Add this line before the closing `</body>` tag in your HTML file:
+
+```html
+<script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
+```
+
 ### npm install
 
 ```bash
@@ -163,8 +162,8 @@ const refiner = new Refiner();
   src="https://unpkg.com/refinekit/dist/refiner.js"
   data-refiner-enabled="true"
   data-refiner-position="right"
-  data-refinekit-mcp-enabled="true"
-  data-refinekit-mcp-port="4848"
+  data-refiner-mcp-enabled="true"
+  data-refiner-mcp-port="4848"
 ></script>
 ```
 
@@ -172,8 +171,8 @@ const refiner = new Refiner();
 |-----------|--------|---------|-------------|
 | `data-refiner-enabled` | `true` / `false` | `true` | Whether to activate on load |
 | `data-refiner-position` | `left` / `right` | `right` | Which side of the viewport |
-| `data-refinekit-mcp-enabled` | `true` / `false` | `true` | Auto-discover MCP server |
-| `data-refinekit-mcp-port` | number | `4848` | MCP server HTTP port |
+| `data-refiner-mcp-enabled` | `true` / `false` | `true` | Auto-discover MCP server |
+| `data-refiner-mcp-port` | number | `4848` | MCP server HTTP port |
 
 #### Constructor options
 
