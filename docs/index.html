@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>refinekit — Install</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #0a0a0f;
+      color: #e8e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 520px;
+      padding: 48px 32px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    h1 span {
+      color: #7C3AED;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #9898a8;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    .bookmarklet-area {
+      background: #14141f;
+      border: 1px solid #2a2a3a;
+      border-radius: 16px;
+      padding: 36px 32px;
+      margin-bottom: 32px;
+    }
+
+    .bookmarklet-area p {
+      font-size: 0.95rem;
+      color: #9898a8;
+      margin-bottom: 20px;
+    }
+
+    .bookmarklet-link {
+      display: inline-block;
+      padding: 14px 32px;
+      background: #7C3AED;
+      color: #fff;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 10px;
+      cursor: grab;
+      transition: background 0.2s, transform 0.2s;
+      user-select: none;
+    }
+
+    .bookmarklet-link:hover {
+      background: #6D28D9;
+      transform: translateY(-1px);
+    }
+
+    .bookmarklet-link:active {
+      cursor: grabbing;
+      transform: translateY(0);
+    }
+
+    .instructions {
+      text-align: left;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #2a2a3a;
+    }
+
+    .instructions p {
+      color: #9898a8;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .instructions ol {
+      color: #c8c8d4;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      padding-left: 20px;
+    }
+
+    .manual {
+      background: #14141f;
+      border: 1px solid #2a2a3a;
+      border-radius: 16px;
+      padding: 28px 32px;
+      text-align: left;
+    }
+
+    .manual summary {
+      color: #9898a8;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .manual summary:hover {
+      color: #c8c8d4;
+    }
+
+    .manual .content {
+      margin-top: 16px;
+    }
+
+    .manual p {
+      color: #9898a8;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .manual code {
+      display: block;
+      background: #0a0a0f;
+      border: 1px solid #2a2a3a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: #7C3AED;
+      word-break: break-all;
+      line-height: 1.5;
+      user-select: all;
+    }
+
+    .footer {
+      margin-top: 48px;
+      color: #5a5a6a;
+      font-size: 0.85rem;
+    }
+
+    .footer a {
+      color: #7C3AED;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><span>refine</span>kit</h1>
+    <p class="subtitle">Leave visual feedback on any web page. Click elements, add notes, and copy them for AI coding tools.</p>
+
+    <div class="bookmarklet-area">
+      <p>Drag this button to your bookmarks bar:</p>
+      <a class="bookmarklet-link" href="javascript:void(function(){var s=document.createElement('script');s.src='https://unpkg.com/refinekit/dist/refiner.js';document.body.appendChild(s)})()">+ refinekit</a>
+
+      <div class="instructions">
+        <p>Then use it:</p>
+        <ol>
+          <li>Go to any web page</li>
+          <li>Click the <strong>+ refinekit</strong> bookmark</li>
+          <li>Click any element to annotate it</li>
+          <li>Copy your annotations and paste into Claude Code</li>
+        </ol>
+      </div>
+    </div>
+
+    <details class="manual">
+      <summary>Can't drag? Create the bookmark manually</summary>
+      <div class="content">
+        <p>Right-click your bookmarks bar, choose "Add bookmark", set the name to <strong>refinekit</strong>, and paste this as the URL:</p>
+        <code>javascript:void(function(){var s=document.createElement('script');s.src='https://unpkg.com/refinekit/dist/refiner.js';document.body.appendChild(s)})()</code>
+      </div>
+    </details>
+
+    <p class="footer">
+      <a href="https://github.com/llewellynathan/refiner">GitHub</a> · Works with <a href="https://claude.com/claude-code">Claude Code</a>
+    </p>
+  </div>
+</body>
+</html>

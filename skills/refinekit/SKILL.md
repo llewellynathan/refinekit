@@ -1,38 +1,28 @@
 ---
-name: refiner
-description: Add Refiner visual annotation overlay to a plain HTML/CSS project for design critique
+name: refinekit
+description: Add refinekit visual annotation overlay to a plain HTML/CSS project for design critique
 ---
 
-# Refiner Setup
+# refinekit Setup
 
-Set up the Refiner annotation toolbar in this project.
+Add the refinekit annotation toolbar to this project.
 
 ## Steps
 
 1. **Check if already installed**
-   - Search for `refiner` script tags in HTML files (`refiner.js` or `refiner`)
-   - If found, report that Refiner is already set up and exit
+   - Search for `refinekit` or `refiner.js` script tags in HTML files
+   - If found, report that refinekit is already set up and exit
 
 2. **Detect project type**
    - Plain HTML: has `.html` files in root or `src/` or `public/`
    - If this is a React/Next.js project, suggest using Agentation instead
-   - If no HTML files found, ask the user which file to add Refiner to
+   - If no HTML files found, ask the user which file to add refinekit to
 
-3. **Install**
-   - Option A (CDN): Add script tag directly — simplest, no npm needed
-   - Option B (npm): `npm install refinekit --save-dev`
+3. **Add the script tag**
 
-4. **Add the script tag**
-
-   For CDN (recommended for plain HTML):
+   Add this before the closing `</body>` tag in every HTML file:
    ```html
-   <!-- Add before closing </body> tag -->
    <script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
-   ```
-
-   For npm install:
-   ```html
-   <script src="./node_modules/refiner/dist/refiner.js"></script>
    ```
 
    Optional configuration via data attributes:
@@ -42,13 +32,13 @@ Set up the Refiner annotation toolbar in this project.
      data-refiner-enabled="true"></script>
    ```
 
-5. **Confirm setup**
+4. **Confirm setup**
    - Tell the user to open the HTML file in a browser
-   - The Refiner toolbar should appear on the right edge of the viewport
+   - The refinekit toolbar should appear on the right edge of the viewport
    - Click any element to add an annotation
    - Use the copy button to export annotations as markdown
 
-6. **Recommend MCP server setup**
+5. **Recommend MCP server setup**
    - Explain that for real-time annotation syncing with AI agents, they should also set up the MCP server
    - Recommend one of the following approaches:
      - **Universal (supports Claude Code, Cursor, Codex, Windsurf, etc.):**
@@ -60,9 +50,8 @@ Set up the Refiner annotation toolbar in this project.
 
 ## Notes
 
-- Refiner uses Shadow DOM — its styles won't interfere with your page
+- refinekit uses Shadow DOM — its styles won't interfere with your page
 - No framework required — works with plain HTML/CSS
-- The toolbar has categories: Spacing, Typography, Contrast, Alignment, Color, Layout, General
 - "Block" mode prevents accidental page interactions while annotating
 - `Cmd+Enter` / `Ctrl+Enter` submits an annotation from the dialog
-- Access the Refiner instance programmatically via `window.__refiner`
+- Access the refinekit instance programmatically via `window.__refiner`
