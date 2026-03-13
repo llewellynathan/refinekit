@@ -1,20 +1,148 @@
 # reFiner
 
-A visual annotation overlay for design critique on any HTML page. Click elements, leave notes, and copy them as structured markdown — ready to paste into AI agents like Claude Code.
+Leave visual feedback directly on any web page. Click an element, type what should change, and reFiner saves your notes as structured annotations that AI coding tools can read and act on.
 
-All UI lives inside a Shadow DOM, so it won't interfere with your page's styles or layout.
+## What it does
 
-## Install
+1. You add a single line to your HTML file
+2. A small toolbar appears on your page
+3. Click any element to leave a note about what should change
+4. Copy all your notes and paste them into an AI coding tool like [Claude Code](https://claude.com/claude-code) — it knows exactly which elements to fix
 
-### Script tag (quickest)
+reFiner stays out of the way. It doesn't change your page's appearance or break any styles.
+
+## Getting started
+
+### Step 1: Add reFiner to your page
+
+Open your HTML file and paste this line just before the closing `</body>` tag:
 
 ```html
 <script src="https://unpkg.com/refiner/dist/refiner.js"></script>
 ```
 
-The toolbar appears automatically in the bottom-right corner.
+Your file should look something like this:
 
-### npm
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <!-- your page content here -->
+
+    <script src="https://unpkg.com/refiner/dist/refiner.js"></script>
+  </body>
+</html>
+```
+
+### Step 2: Open your page in a browser
+
+Open the HTML file in Chrome, Safari, Firefox, or any modern browser. You'll see a small pen icon in the bottom-right corner — that's the reFiner toolbar.
+
+### Step 3: Start annotating
+
+1. Click the **pen icon** to expand the toolbar
+2. Click any element on the page — a heading, a button, an image, anything
+3. A dialog appears. Type what should change (e.g. "Make this font bigger" or "Change this color to blue")
+4. Click **Add** (or press `Cmd+Enter` on Mac / `Ctrl+Enter` on Windows)
+5. A numbered marker appears on the element
+
+Repeat for as many elements as you'd like to annotate.
+
+### Step 4: Copy your annotations
+
+Click the **copy icon** in the toolbar. All your annotations are copied to your clipboard as a formatted list, ready to paste into Claude Code or any AI coding assistant.
+
+What gets copied looks like this:
+
+```
+# Design Annotations — My Page Title
+
+## 1.
+Element: body > main > h2
+Issue: Make this font bigger and bolder
+
+## 2.
+Element: #hero > .cta-button
+Issue: Change this color to blue and add more padding
+```
+
+The AI agent uses the element selectors to find and fix exactly the right elements in your code.
+
+## Toolbar guide
+
+| Button | What it does |
+|--------|-------------|
+| Pen / X | Show or hide the toolbar |
+| Number badge | Shows how many annotations you've added |
+| Copy | Copy all annotations to clipboard |
+| Trash | Remove all annotations |
+| Gear | Open settings |
+
+### Settings
+
+- **Marker Colour** — change the color of the numbered markers
+- **Clear on copy** — automatically remove annotations after copying them
+- **Block page interactions** — prevents you from accidentally clicking links or buttons while annotating (on by default)
+
+## Using reFiner with Claude Code
+
+[Claude Code](https://claude.com/claude-code) is an AI coding tool that can read your reFiner annotations and make the changes for you.
+
+### Quick setup
+
+If you already have Claude Code installed, just type:
+
+```
+/refiner
+```
+
+Claude Code will detect your project and add reFiner for you automatically.
+
+### Autonomous design critique
+
+Want Claude to review your page's design on its own? Type:
+
+```
+/refiner-self-driving
+```
+
+Claude opens your page in a browser and drives through it like a design reviewer — clicking elements, adding expert feedback on typography, spacing, colors, and layout. You watch it work in real time.
+
+### Real-time sync with MCP
+
+By default, you copy annotations and paste them into Claude Code. But you can skip the copy-paste entirely by running the reFiner MCP server:
+
+```bash
+npx refiner-mcp server
+```
+
+Once running, annotations flow directly to Claude Code as you add them. The settings panel in reFiner will show "MCP Connected" to confirm the link is active.
+
+To make this permanent in Claude Code:
+
+```bash
+npx refiner-mcp init
+```
+
+### Two-session workflow
+
+The most powerful setup uses two Claude Code sessions at once:
+
+1. **Session 1** runs `/refiner-self-driving` — it reviews your page and adds design annotations
+2. **Session 2** watches for those annotations and fixes the code to address each one
+
+You watch Session 1 critique the design while Session 2 implements the fixes — fully hands-free.
+
+---
+
+## Advanced
+
+Everything below is for developers who want more control over reFiner.
+
+### npm install
 
 ```bash
 npm install refiner
@@ -26,43 +154,9 @@ import { Refiner } from 'refiner';
 const refiner = new Refiner();
 ```
 
-### Claude Code skill
+### Configuration
 
-If you're using [Claude Code](https://claude.com/claude-code), run:
-
-```
-/refiner
-```
-
-This detects your project type and installs reFiner automatically.
-
-## Usage
-
-1. **Click any element** on the page to open the annotation dialog
-2. **Describe what should change** and hit Add (or `Cmd+Enter` / `Ctrl+Enter`)
-3. **Repeat** for as many elements as you like — numbered markers track each annotation
-4. **Copy** all annotations to clipboard with the copy button — output is structured markdown with CSS selectors, ready for an AI coding agent
-
-### Toolbar controls
-
-| Icon | Action |
-|------|--------|
-| Pen / X | Expand or collapse the toolbar |
-| Count badge | Shows the number of active annotations |
-| Copy | Copy all annotations as markdown to clipboard |
-| Trash | Clear all annotations |
-| Gear | Open settings panel |
-
-### Settings
-
-- **Marker Colour** — pick from 7 saturated color swatches
-- **Clear on copy** — automatically remove annotations after copying
-- **Block page interactions** — prevent clicks from reaching the page underneath (enabled by default)
-- **MCP status** — shows whether the MCP server is connected for real-time sync
-
-## Configuration
-
-### Script tag attributes
+#### Script tag attributes
 
 ```html
 <script
@@ -81,18 +175,18 @@ This detects your project type and installs reFiner automatically.
 | `data-refiner-mcp-enabled` | `true` / `false` | `true` | Auto-discover MCP server |
 | `data-refiner-mcp-port` | number | `4848` | MCP server HTTP port |
 
-### Constructor options
+#### Constructor options
 
 ```js
 const refiner = new Refiner({
-  enabled: true,       // activate immediately
-  position: 'right',   // 'left' or 'right'
-  mcpEnabled: true,    // auto-discover MCP server
-  mcpPort: 4848,       // MCP server HTTP port
+  enabled: true,
+  position: 'right',
+  mcpEnabled: true,
+  mcpPort: 4848,
 });
 ```
 
-## API
+### JavaScript API
 
 The instance is available at `window.__refiner` when loaded via script tag.
 
@@ -110,41 +204,9 @@ r.copyAnnotations();     // copies markdown to clipboard
 r.clearAnnotations();    // removes all annotations
 ```
 
-## Clipboard output format
+### MCP server details
 
-When you copy annotations, the clipboard contains markdown like this:
-
-```markdown
-# Design Annotations — My Page Title
-
-## 1.
-**Element:** `body > main > section:nth-child(1) > h2`
-**Issue:** Change this font to Inter
-
-## 2.
-**Element:** `#hero > .cta-button`
-**Issue:** Increase padding and make the corners more rounded
-```
-
-## MCP Server
-
-The `refiner-mcp` server enables real-time annotation sync between the browser and AI agents. When running, reFiner auto-discovers it and streams annotations directly to your coding agent — no copy-paste needed.
-
-### Setup
-
-```bash
-# Start the server
-npx refiner-mcp server
-
-# Or add it to Claude Code permanently
-npx refiner-mcp init
-```
-
-The server runs on port 4848 by default. When reFiner detects it, the settings panel shows "MCP Connected".
-
-### MCP tools
-
-Once connected, your AI agent has access to these tools:
+#### MCP tools
 
 | Tool | Description |
 |------|-------------|
@@ -154,9 +216,7 @@ Once connected, your AI agent has access to these tools:
 | `refiner_dismiss` | Dismiss an annotation with a reason |
 | `refiner_watch_annotations` | Block until a new annotation arrives (for continuous watching) |
 
-### HTTP API
-
-The server also exposes a REST API for custom integrations:
+#### HTTP API
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -169,49 +229,20 @@ The server also exposes a REST API for custom integrations:
 | `GET` | `/pending` | Get all pending annotations |
 | `GET` | `/events` | SSE stream for real-time updates |
 
-### Environment variables
+#### Environment variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `REFINER_PORT` | `4848` | HTTP server port |
 | `REFINER_STORE` | SQLite at `~/.refiner/store.db` | Set to `memory` for in-memory storage |
 
-### Verify setup
+#### Verify setup
 
 ```bash
 npx refiner-mcp doctor
 ```
 
-## Claude Code Skills
-
-reFiner ships with two Claude Code skills for AI-assisted design critique.
-
-### `/refiner` — Setup
-
-Automatically installs reFiner in your project. Detects whether you have plain HTML files, adds the script tag, and recommends MCP server setup.
-
-### `/refiner-self-driving` — Autonomous critique
-
-Launches a headed browser, navigates to your page, and autonomously adds design annotations — clicking elements, writing critiques, and verifying each annotation. You watch the AI drive through your page like a design reviewer.
-
-Requires the [agent-browser](https://github.com/anthropics/agent-browser) skill.
-
-```
-/refiner-self-driving
-```
-
-The agent critiques typography, spacing, color, hierarchy, CTAs, and more — producing 5-8 specific, actionable annotations per page.
-
-### Two-session workflow
-
-With the MCP server running, you can run fully autonomous design review:
-
-1. **Session 1** runs `/refiner-self-driving` — watches the page and adds critique annotations
-2. **Session 2** calls `refiner_watch_annotations` in a loop — receives each annotation and edits the code to address it
-
-The designer watches Session 1 drive through the UI while Session 2 fixes issues in the codebase.
-
-### Installing the skills
+### Installing Claude Code skills manually
 
 ```bash
 # From the refiner project directory
@@ -221,7 +252,7 @@ ln -sf "$(pwd)/skills/refiner-self-driving" ~/.claude/skills/refiner-self-drivin
 
 Restart Claude Code after installing.
 
-## Development
+### Development
 
 ```bash
 git clone https://github.com/llewellynathan/refiner.git
@@ -233,7 +264,7 @@ npm run watch     # rebuild on changes
 
 Open `examples/test.html` in a browser to test.
 
-### MCP server development
+#### MCP server development
 
 ```bash
 cd mcp
