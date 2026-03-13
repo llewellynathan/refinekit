@@ -35,11 +35,11 @@ async function main() {
       console.log('Setting up Refiner MCP server for Claude Code...\n');
 
       try {
-        execSync('claude mcp add refiner -- npx re-finer-mcp server', { stdio: 'inherit' });
+        execSync('claude mcp add refiner -- npx refinekit-mcp server', { stdio: 'inherit' });
         console.log('\nRefiner MCP server added. Restart Claude Code to load it.');
       } catch {
         console.error('Failed to add MCP server. Make sure Claude Code CLI is installed.');
-        console.log('\nManual setup: claude mcp add refiner -- npx re-finer-mcp server');
+        console.log('\nManual setup: claude mcp add refiner -- npx refinekit-mcp server');
         process.exit(1);
       }
       break;
@@ -57,7 +57,7 @@ async function main() {
         }
       } catch {
         console.log('  HTTP server: not running');
-        console.log('    Run: npx re-finer-mcp server');
+        console.log('    Run: npx refinekit-mcp server');
       }
 
       // Check Claude Code MCP config
@@ -68,7 +68,7 @@ async function main() {
           console.log('  Claude Code MCP: configured');
         } else {
           console.log('  Claude Code MCP: not configured');
-          console.log('    Run: npx re-finer-mcp init');
+          console.log('    Run: npx refinekit-mcp init');
         }
       } catch {
         console.log('  Claude Code MCP: unable to check (is Claude Code installed?)');
@@ -79,13 +79,13 @@ async function main() {
     }
 
     default:
-      console.log(`re-finer-mcp — MCP server for Refiner annotation sync
+      console.log(`refinekit-mcp — MCP server for Refiner annotation sync
 
 Usage:
-  re-finer-mcp server    Start the HTTP + MCP servers
-  re-finer-mcp init      Set up MCP server in Claude Code
-  re-finer-mcp doctor    Verify setup
-  re-finer-mcp help      Show this message
+  refinekit-mcp server    Start the HTTP + MCP servers
+  refinekit-mcp init      Set up MCP server in Claude Code
+  refinekit-mcp doctor    Verify setup
+  refinekit-mcp help      Show this message
 
 Environment:
   REFINER_PORT=4848     HTTP server port (default: 4848)
