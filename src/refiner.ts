@@ -54,12 +54,10 @@ export class Refiner {
       this.settings.hide();
       this.toolbar.setSettingsOpen(false);
       this.overlay.setEnabled(false);
-      this.host.style.pointerEvents = 'none';
     };
 
     this.toolbar.onExpand = () => {
       this.overlay.setEnabled(true);
-      this.host.style.pointerEvents = '';
     };
 
     // Wire up settings
