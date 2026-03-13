@@ -53,6 +53,13 @@ export class Refiner {
     this.toolbar.onCollapse = () => {
       this.settings.hide();
       this.toolbar.setSettingsOpen(false);
+      this.overlay.setEnabled(false);
+      this.host.style.pointerEvents = 'none';
+    };
+
+    this.toolbar.onExpand = () => {
+      this.overlay.setEnabled(true);
+      this.host.style.pointerEvents = '';
     };
 
     // Wire up settings
@@ -144,7 +151,13 @@ export class Refiner {
     if (annotations.length === 0) return 'No annotations.';
 
     const pageTitle = document.title || window.location.pathname;
-    const lines: string[] = [`# Design Annotations — ${pageTitle}`, ''];
+    const pathname = window.location.pathname;
+    const filename = pathname.substring(pathname.lastIndexOf('/') + 1) || 'index.html';
+    const lines: string[] = [
+      `# Design Annotations — ${pageTitle}`,
+      `**File:** \`${filename}\``,
+      '',
+    ];
 
     for (let i = 0; i < annotations.length; i++) {
       const a = annotations[i];

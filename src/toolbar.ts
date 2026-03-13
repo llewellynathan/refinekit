@@ -13,6 +13,7 @@ export class Toolbar {
   onClear?: () => void;
   onSettings?: () => void;
   onCollapse?: () => void;
+  onExpand?: () => void;
 
   constructor(private root: ShadowRoot) {
     this.el = document.createElement('div');
@@ -154,6 +155,8 @@ export class Toolbar {
     this.updateBadgeVisibility();
     if (this.collapsed) {
       this.onCollapse?.();
+    } else {
+      this.onExpand?.();
     }
   }
 
