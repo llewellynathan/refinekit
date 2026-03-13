@@ -46,7 +46,17 @@ Set up the Refiner annotation toolbar in this project.
    - Tell the user to open the HTML file in a browser
    - The Refiner toolbar should appear on the right edge of the viewport
    - Click any element to add an annotation
-   - Use Export to download annotations as JSON
+   - Use the copy button to export annotations as markdown
+
+6. **Recommend MCP server setup**
+   - Explain that for real-time annotation syncing with AI agents, they should also set up the MCP server
+   - Recommend one of the following approaches:
+     - **Universal (supports Claude Code, Cursor, Codex, Windsurf, etc.):**
+       See [add-mcp](https://github.com/neondatabase/add-mcp) — run `npx add-mcp` and follow the prompts to add `refiner-mcp` as an MCP server
+     - **Claude Code only:**
+       Run `npx refiner-mcp init` after installing the package
+   - Tell user to restart their coding agent after MCP setup to load the server
+   - Explain that once configured, annotations will sync to the agent automatically — the settings panel will show "MCP Connected"
 
 ## Notes
 

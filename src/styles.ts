@@ -551,4 +551,28 @@ export const STYLES = `
     background: #FF6B6B;
     color: #fff;
   }
+
+  /* MCP status */
+  .settings-mcp-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+  }
+
+  .settings-mcp-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .settings-mcp-dot.connected {
+    background: #34D399;
+    box-shadow: 0 0 6px #34D39980;
+  }
+
+  .settings-mcp-dot.disconnected {
+    background: #6B7280;
+  }
 `;
