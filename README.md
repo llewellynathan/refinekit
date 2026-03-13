@@ -8,7 +8,7 @@ Leave visual feedback directly on any web page. Click an element, type what shou
 
 Drag this link to your bookmarks bar:
 
-> **[+ reFiner](javascript:void(function(){var%20s=document.createElement('script');s.src='https://unpkg.com/refiner/dist/refiner.js';document.body.appendChild(s)})())**
+> **[+ reFiner](javascript:void(function(){var%20s=document.createElement('script');s.src='https://unpkg.com/refinekit/dist/refiner.js';document.body.appendChild(s)})())**
 
 Then visit any web page and click the bookmark. The reFiner toolbar appears instantly. That's it.
 
@@ -23,7 +23,7 @@ Then visit any web page and click the bookmark. The reFiner toolbar appears inst
 If dragging doesn't work in your browser, you can create the bookmark manually:
 1. Create a new bookmark (right-click the bookmarks bar > "Add page..." or "Add bookmark...")
 2. Set the name to `reFiner`
-3. Set the URL to: `javascript:void(function(){var%20s=document.createElement('script');s.src='https://unpkg.com/refiner/dist/refiner.js';document.body.appendChild(s)})()`
+3. Set the URL to: `javascript:void(function(){var%20s=document.createElement('script');s.src='https://unpkg.com/refinekit/dist/refiner.js';document.body.appendChild(s)})()`
 
 </details>
 
@@ -107,7 +107,7 @@ Claude opens your page in a browser and drives through it like a design reviewer
 By default, you copy annotations and paste them into Claude Code. But you can skip the copy-paste entirely by running the reFiner MCP server:
 
 ```bash
-npx refiner-mcp server
+npx refinekit-mcp server
 ```
 
 Once running, annotations flow directly to Claude Code as you add them. The settings panel in reFiner will show "MCP Connected" to confirm the link is active.
@@ -115,7 +115,7 @@ Once running, annotations flow directly to Claude Code as you add them. The sett
 To make this permanent in Claude Code:
 
 ```bash
-npx refiner-mcp init
+npx refinekit-mcp init
 ```
 
 ### Two-session workflow
@@ -138,17 +138,17 @@ Everything below is for developers who want more control over reFiner.
 Add this line before the closing `</body>` tag in your HTML file:
 
 ```html
-<script src="https://unpkg.com/refiner/dist/refiner.js"></script>
+<script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
 ```
 
 ### npm install
 
 ```bash
-npm install refiner
+npm install refinekit
 ```
 
 ```js
-import { Refiner } from 'refiner';
+import { Refiner } from 'refinekit';
 
 const refiner = new Refiner();
 ```
@@ -159,7 +159,7 @@ const refiner = new Refiner();
 
 ```html
 <script
-  src="https://unpkg.com/refiner/dist/refiner.js"
+  src="https://unpkg.com/refinekit/dist/refiner.js"
   data-refiner-enabled="true"
   data-refiner-position="right"
   data-refiner-mcp-enabled="true"
@@ -238,7 +238,7 @@ r.clearAnnotations();    // removes all annotations
 #### Verify setup
 
 ```bash
-npx refiner-mcp doctor
+npx refinekit-mcp doctor
 ```
 
 ### Installing Claude Code skills manually

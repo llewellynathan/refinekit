@@ -1,5 +1,5 @@
 {
-  "name": "refiner",
+  "name": "refinekit",
   "version": "0.1.0",
   "description": "Visual annotation overlay for HTML/CSS design critique",
   "main": "dist/refiner.js",

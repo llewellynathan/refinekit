@@ -20,14 +20,14 @@ Set up the Refiner annotation toolbar in this project.
 
 3. **Install**
    - Option A (CDN): Add script tag directly — simplest, no npm needed
-   - Option B (npm): `npm install refiner --save-dev`
+   - Option B (npm): `npm install refinekit --save-dev`
 
 4. **Add the script tag**
 
    For CDN (recommended for plain HTML):
    ```html
    <!-- Add before closing </body> tag -->
-   <script src="https://unpkg.com/refiner/dist/refiner.js"></script>
+   <script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
    ```
 
    For npm install:
@@ -37,7 +37,7 @@ Set up the Refiner annotation toolbar in this project.
 
    Optional configuration via data attributes:
    ```html
-   <script src="https://unpkg.com/refiner/dist/refiner.js"
+   <script src="https://unpkg.com/refinekit/dist/refiner.js"
      data-refiner-position="right"
      data-refiner-enabled="true"></script>
    ```
@@ -52,9 +52,9 @@ Set up the Refiner annotation toolbar in this project.
    - Explain that for real-time annotation syncing with AI agents, they should also set up the MCP server
    - Recommend one of the following approaches:
      - **Universal (supports Claude Code, Cursor, Codex, Windsurf, etc.):**
-       See [add-mcp](https://github.com/neondatabase/add-mcp) — run `npx add-mcp` and follow the prompts to add `refiner-mcp` as an MCP server
+       See [add-mcp](https://github.com/neondatabase/add-mcp) — run `npx add-mcp` and follow the prompts to add `refinekit-mcp` as an MCP server
      - **Claude Code only:**
-       Run `npx refiner-mcp init` after installing the package
+       Run `npx refinekit-mcp init` after installing the package
    - Tell user to restart their coding agent after MCP setup to load the server
    - Explain that once configured, annotations will sync to the agent automatically — the settings panel will show "MCP Connected"
 
