@@ -57,7 +57,7 @@ export class HttpServer {
     try {
       // GET /health
       if (req.method === 'GET' && url.pathname === '/health') {
-        this.json(res, { status: 'ok', service: 'refiner-mcp' });
+        this.json(res, { status: 'ok', service: 're-finer-mcp' });
         return;
       }
 
