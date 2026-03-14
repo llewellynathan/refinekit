@@ -21,7 +21,7 @@ Claude Code will add the script tag to your HTML files for you. You can also use
 Add this line to your HTML file, just before the closing `</body>` tag:
 
 ```html
-<script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
+<script src="https://unpkg.com/refinekit/dist/refinekit.js"></script>
 ```
 
 Open the file in your browser and the refinekit toolbar will appear in the bottom-right corner.
@@ -76,7 +76,7 @@ Issue: Change this color to blue and add more padding
 Want Claude to review your page's design on its own? Type:
 
 ```
-/refiner-self-driving
+/refinekit-self-driving
 ```
 
 Claude opens your page in a browser and drives through it like a design reviewer — clicking elements, adding expert feedback on typography, spacing, colors, and layout. You watch it work in real time.
@@ -101,7 +101,7 @@ npx refinekit-mcp init
 
 The most powerful setup uses two Claude Code sessions at once:
 
-1. **Session 1** runs `/refiner-self-driving` — it reviews your page and adds design annotations
+1. **Session 1** runs `/refinekit-self-driving` — it reviews your page and adds design annotations
 2. **Session 2** watches for those annotations and fixes the code to address each one
 
 You watch Session 1 critique the design while Session 2 implements the fixes — fully hands-free.
@@ -119,9 +119,9 @@ npm install refinekit
 ```
 
 ```js
-import { Refiner } from 'refinekit';
+import { RefineKit } from 'refinekit';
 
-const refiner = new Refiner();
+const refinekit = new RefineKit();
 ```
 
 ### Configuration
@@ -130,25 +130,25 @@ const refiner = new Refiner();
 
 ```html
 <script
-  src="https://unpkg.com/refinekit/dist/refiner.js"
-  data-refiner-enabled="true"
-  data-refiner-position="right"
-  data-refiner-mcp-enabled="true"
-  data-refiner-mcp-port="4848"
+  src="https://unpkg.com/refinekit/dist/refinekit.js"
+  data-refinekit-enabled="true"
+  data-refinekit-position="right"
+  data-refinekit-mcp-enabled="true"
+  data-refinekit-mcp-port="4848"
 ></script>
 ```
 
 | Attribute | Values | Default | Description |
 |-----------|--------|---------|-------------|
-| `data-refiner-enabled` | `true` / `false` | `true` | Whether to activate on load |
-| `data-refiner-position` | `left` / `right` | `right` | Which side of the viewport |
-| `data-refiner-mcp-enabled` | `true` / `false` | `true` | Auto-discover MCP server |
-| `data-refiner-mcp-port` | number | `4848` | MCP server HTTP port |
+| `data-refinekit-enabled` | `true` / `false` | `true` | Whether to activate on load |
+| `data-refinekit-position` | `left` / `right` | `right` | Which side of the viewport |
+| `data-refinekit-mcp-enabled` | `true` / `false` | `true` | Auto-discover MCP server |
+| `data-refinekit-mcp-port` | number | `4848` | MCP server HTTP port |
 
 #### Constructor options
 
 ```js
-const refiner = new Refiner({
+const refinekit = new RefineKit({
   enabled: true,
   position: 'right',
   mcpEnabled: true,
@@ -158,10 +158,10 @@ const refiner = new Refiner({
 
 ### JavaScript API
 
-The instance is available at `window.__refiner` when loaded via script tag.
+The instance is available at `window.__refinekit` when loaded via script tag.
 
 ```js
-const r = window.__refiner;
+const r = window.__refinekit;
 
 r.enable();              // show the toolbar and overlay
 r.disable();             // hide everything
@@ -180,11 +180,11 @@ r.clearAnnotations();    // removes all annotations
 
 | Tool | Description |
 |------|-------------|
-| `refiner_list_sessions` | List all annotation sessions |
-| `refiner_get_all_pending` | Get all unresolved annotations |
-| `refiner_resolve` | Mark an annotation as resolved with a summary |
-| `refiner_dismiss` | Dismiss an annotation with a reason |
-| `refiner_watch_annotations` | Block until a new annotation arrives (for continuous watching) |
+| `refinekit_list_sessions` | List all annotation sessions |
+| `refinekit_get_all_pending` | Get all unresolved annotations |
+| `refinekit_resolve` | Mark an annotation as resolved with a summary |
+| `refinekit_dismiss` | Dismiss an annotation with a reason |
+| `refinekit_watch_annotations` | Block until a new annotation arrives (for continuous watching) |
 
 #### HTTP API
 
@@ -203,8 +203,8 @@ r.clearAnnotations();    // removes all annotations
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `REFINER_PORT` | `4848` | HTTP server port |
-| `REFINER_STORE` | SQLite at `~/.refiner/store.db` | Set to `memory` for in-memory storage |
+| `REFINEKIT_PORT` | `4848` | HTTP server port |
+| `REFINEKIT_STORE` | SQLite at `~/.refinekit/store.db` | Set to `memory` for in-memory storage |
 
 #### Verify setup
 
@@ -215,9 +215,9 @@ npx refinekit-mcp doctor
 ### Installing Claude Code skills manually
 
 ```bash
-# From the refiner project directory
+# From the refinekit project directory
 ln -sf "$(pwd)/skills/refinekit" ~/.claude/skills/refinekit
-ln -sf "$(pwd)/skills/refiner-self-driving" ~/.claude/skills/refiner-self-driving
+ln -sf "$(pwd)/skills/refinekit-self-driving" ~/.claude/skills/refinekit-self-driving
 ```
 
 Restart Claude Code after installing.

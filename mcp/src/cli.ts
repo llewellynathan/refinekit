@@ -1,18 +1,18 @@
 import { Store } from './store.js';
 import { HttpServer } from './http-server.js';
-import { RefinerMcpServer } from './mcp-server.js';
+import { RefineKitMcpServer } from './mcp-server.js';
 
 const command = process.argv[2];
 
 async function main() {
   switch (command) {
     case 'server': {
-      const port = parseInt(process.env.REFINER_PORT ?? '4848', 10);
-      const dbPath = process.env.REFINER_STORE === 'memory' ? ':memory:' : undefined;
+      const port = parseInt(process.env.REFINEKIT_PORT ?? '4848', 10);
+      const dbPath = process.env.REFINEKIT_STORE === 'memory' ? ':memory:' : undefined;
 
       const store = new Store(dbPath);
       const httpServer = new HttpServer(store, port);
-      const mcpServer = new RefinerMcpServer(store);
+      const mcpServer = new RefineKitMcpServer(store);
 
       await httpServer.start();
       await mcpServer.start();
@@ -32,21 +32,21 @@ async function main() {
 
     case 'init': {
       const { execSync } = await import('node:child_process');
-      console.log('Setting up Refiner MCP server for Claude Code...\n');
+      console.log('Setting up RefineKit MCP server for Claude Code...\n');
 
       try {
-        execSync('claude mcp add refiner -- npx refinekit-mcp server', { stdio: 'inherit' });
-        console.log('\nRefiner MCP server added. Restart Claude Code to load it.');
+        execSync('claude mcp add refinekit -- npx refinekit-mcp server', { stdio: 'inherit' });
+        console.log('\nRefineKit MCP server added. Restart Claude Code to load it.');
       } catch {
         console.error('Failed to add MCP server. Make sure Claude Code CLI is installed.');
-        console.log('\nManual setup: claude mcp add refiner -- npx refinekit-mcp server');
+        console.log('\nManual setup: claude mcp add refinekit -- npx refinekit-mcp server');
         process.exit(1);
       }
       break;
     }
 
     case 'doctor': {
-      console.log('Checking Refiner MCP setup...\n');
+      console.log('Checking RefineKit MCP setup...\n');
 
       // Check if HTTP server is running
       try {
@@ -64,7 +64,7 @@ async function main() {
       try {
         const { execSync } = await import('node:child_process');
         const output = execSync('claude mcp list', { encoding: 'utf-8' });
-        if (output.includes('refiner')) {
+        if (output.includes('refinekit')) {
           console.log('  Claude Code MCP: configured');
         } else {
           console.log('  Claude Code MCP: not configured');
@@ -79,7 +79,7 @@ async function main() {
     }
 
     default:
-      console.log(`refinekit-mcp — MCP server for Refiner annotation sync
+      console.log(`refinekit-mcp — MCP server for RefineKit annotation sync
 
 Usage:
   refinekit-mcp server    Start the HTTP + MCP servers
@@ -88,8 +88,8 @@ Usage:
   refinekit-mcp help      Show this message
 
 Environment:
-  REFINER_PORT=4848     HTTP server port (default: 4848)
-  REFINER_STORE=memory  Use in-memory storage instead of SQLite
+  REFINEKIT_PORT=4848     HTTP server port (default: 4848)
+  REFINEKIT_STORE=memory  Use in-memory storage instead of SQLite
 `);
       break;
   }

@@ -10,11 +10,11 @@ export class Overlay {
 
   constructor(private root: ShadowRoot) {
     this.el = document.createElement('div');
-    this.el.className = 'refiner-overlay';
+    this.el.className = 'refinekit-overlay';
     this.el.setAttribute('data-blocking', 'true');
 
     this.highlight = document.createElement('div');
-    this.highlight.className = 'refiner-highlight';
+    this.highlight.className = 'refinekit-highlight';
     this.highlight.style.display = 'none';
 
     root.appendChild(this.highlight);
@@ -64,7 +64,7 @@ export class Overlay {
 
   private handleKeyBlock = (e: KeyboardEvent): void => {
     if (!this.enabled || !this.blocking) return;
-    // Allow keys when focus is inside refiner's own UI (e.g. annotation dialog textarea)
+    // Allow keys when focus is inside refinekit's own UI (e.g. annotation dialog textarea)
     const target = e.target as Element;
     if (target && (target === this.root.host || this.root.host.contains(target))) return;
 

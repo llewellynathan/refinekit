@@ -8,7 +8,7 @@ export class AnnotationDialog {
 
   constructor(private root: ShadowRoot) {
     this.el = document.createElement('div');
-    this.el.className = 'refiner-dialog hidden';
+    this.el.className = 'refinekit-dialog hidden';
     this.render();
     root.appendChild(this.el);
   }

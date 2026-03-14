@@ -14,7 +14,7 @@ export class AnnotationMarkers {
 
   constructor(private root: ShadowRoot, private store: AnnotationStore) {
     this.container = document.createElement('div');
-    this.container.className = 'refiner-markers';
+    this.container.className = 'refinekit-markers';
     root.appendChild(this.container);
 
     store.on('add', (annotation) => this.addMarker(annotation));
@@ -28,7 +28,7 @@ export class AnnotationMarkers {
 
   private addMarker(annotation: Annotation): void {
     const el = document.createElement('div');
-    el.className = 'refiner-marker';
+    el.className = 'refinekit-marker';
     el.setAttribute('data-annotation-marker', annotation.id);
     el.setAttribute('data-resolved', String(annotation.resolved));
     el.style.background = this.color;

@@ -2,8 +2,8 @@
   "name": "refinekit",
   "version": "0.2.1",
   "description": "Visual annotation overlay for HTML/CSS design critique",
-  "main": "dist/refiner.js",
-  "module": "dist/refiner.mjs",
+  "main": "dist/refinekit.js",
+  "module": "dist/refinekit.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
