@@ -23,7 +23,8 @@ Add the refinekit annotation toolbar to this project.
 
 2. **Check if already installed**
    - For each target file, search for `refinekit` or `refinekit.js` script tags
-   - Skip any file that already has it and tell the user
+   - If the file has an old `refiner.js` script tag (e.g. `dist/refiner.js`), replace it with the new `dist/refinekit.js` URL and tell the user it was migrated
+   - Skip any file that already has the current `refinekit.js` tag and tell the user
 
 3. **Add the script tag**
 
