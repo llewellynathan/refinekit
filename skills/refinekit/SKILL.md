@@ -21,10 +21,10 @@ Add the refinekit annotation toolbar to this project.
    - List the HTML files found and ask the user which ones to install on — let them pick one, several, or all
    - If no HTML files found, ask the user to provide a path
 
-2. **Check if already installed**
-   - For each target file, search for `refinekit` or `refinekit.js` script tags
-   - If the file has an old `refiner.js` script tag (e.g. `dist/refiner.js`), replace it with the new `dist/refinekit.js` URL and tell the user it was migrated
-   - Skip any file that already has the current `refinekit.js` tag and tell the user
+2. **Check if already installed and up to date**
+   - For each target file, search for script tags containing `refinekit` or `refiner`
+   - If the file has a script tag with `dist/refiner.js` (the OLD filename), replace the entire src URL with `https://unpkg.com/refinekit/dist/refinekit.js` and tell the user it was migrated
+   - Only skip files that already have `dist/refinekit.js` (the CURRENT filename) in their script tag
 
 3. **Add the script tag**
 
