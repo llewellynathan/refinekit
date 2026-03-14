@@ -84,6 +84,7 @@ export class RefineKit {
     };
 
     this.overlay.onHoverChange = (target, rect) => {
+      if (this.inspectPanel.isLocked()) return;
       if (this.inspectMode && target && rect) {
         this.inspectPanel.show(target, rect);
       } else if (this.inspectMode) {
