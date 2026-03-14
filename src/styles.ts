@@ -597,6 +597,10 @@ export const STYLES = `
     display: none;
   }
 
+  .inspect-panel.locked {
+    border-color: rgba(37, 99, 235, 0.4);
+  }
+
   .inspect-element-tag {
     font-size: 12px;
     font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
