@@ -21,7 +21,7 @@ export const STYLES = `
 
   /* ── Toolbar ── */
 
-  .refiner-toolbar {
+  .refinekit-toolbar {
     position: fixed;
     bottom: 24px;
     right: 24px;
@@ -42,7 +42,7 @@ export const STYLES = `
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
-  .refiner-toolbar[data-collapsed="true"] .toolbar-pill {
+  .refinekit-toolbar[data-collapsed="true"] .toolbar-pill {
     transform: scale(0.92);
   }
 
@@ -60,7 +60,7 @@ export const STYLES = `
                 padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .refiner-toolbar[data-collapsed="true"] .toolbar-inner {
+  .refinekit-toolbar[data-collapsed="true"] .toolbar-inner {
     max-width: 0;
     opacity: 0;
     padding-right: 0;
@@ -325,7 +325,7 @@ export const STYLES = `
 
   /* ── Overlay ── */
 
-  .refiner-overlay {
+  .refinekit-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -335,21 +335,21 @@ export const STYLES = `
     z-index: 1;
   }
 
-  .refiner-overlay[data-blocking="true"] {
+  .refinekit-overlay[data-blocking="true"] {
     pointer-events: all;
   }
 
-  .refiner-overlay[data-blocking="false"] {
+  .refinekit-overlay[data-blocking="false"] {
     pointer-events: none;
   }
 
-  .refiner-overlay.hidden {
+  .refinekit-overlay.hidden {
     display: none;
   }
 
   /* ── Highlight ── */
 
-  .refiner-highlight {
+  .refinekit-highlight {
     position: fixed;
     pointer-events: none;
     border: 2px dashed;
@@ -360,7 +360,7 @@ export const STYLES = `
 
   /* ── Dialog ── */
 
-  .refiner-dialog {
+  .refinekit-dialog {
     position: fixed;
     width: 320px;
     background: #1a1a2e;
@@ -378,7 +378,7 @@ export const STYLES = `
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  .refiner-dialog.hidden {
+  .refinekit-dialog.hidden {
     display: none;
   }
 
@@ -464,7 +464,7 @@ export const STYLES = `
 
   /* ── Markers ── */
 
-  .refiner-marker {
+  .refinekit-marker {
     position: fixed;
     width: 24px;
     height: 24px;
@@ -482,11 +482,11 @@ export const STYLES = `
     pointer-events: all;
   }
 
-  .refiner-marker:hover {
+  .refinekit-marker:hover {
     transform: scale(1.2);
   }
 
-  .refiner-marker[data-resolved="true"] {
+  .refinekit-marker[data-resolved="true"] {
     opacity: 0.4;
   }
 
@@ -510,7 +510,7 @@ export const STYLES = `
     word-break: break-word;
   }
 
-  .refiner-marker:hover .marker-tooltip {
+  .refinekit-marker:hover .marker-tooltip {
     opacity: 1;
   }
 

@@ -1,12 +1,12 @@
 ---
-name: refiner-self-driving
-description: Autonomous design critique mode using the Refiner annotation overlay. Use when the user asks to "critique this page," "add design annotations," "review the UI," "self-driving mode," "auto-annotate," or wants an AI agent to autonomously add design feedback annotations to a plain HTML/CSS page via the browser. Requires the Refiner toolbar to be installed on the target page and agent-browser skill to be available.
+name: refinekit-self-driving
+description: Autonomous design critique mode using the RefineKit annotation overlay. Use when the user asks to "critique this page," "add design annotations," "review the UI," "self-driving mode," "auto-annotate," or wants an AI agent to autonomously add design feedback annotations to a plain HTML/CSS page via the browser. Requires the RefineKit toolbar to be installed on the target page and agent-browser skill to be available.
 allowed-tools: Bash(agent-browser:*)
 ---
 
-# Refiner Self-Driving Mode
+# RefineKit Self-Driving Mode
 
-Autonomously critique a web page by adding design annotations via the Refiner overlay — in a visible headed browser so the user can watch the agent work in real time.
+Autonomously critique a web page by adding design annotations via the RefineKit overlay — in a visible headed browser so the user can watch the agent work in real time.
 
 ## Launch — Always Headed
 
@@ -25,30 +25,30 @@ command -v agent-browser >/dev/null || { echo "ERROR: agent-browser not found. I
 agent-browser --headed open <url> 2>&1 || { agent-browser close 2>/dev/null; agent-browser --headed open <url>; }
 ```
 
-Then verify the Refiner toolbar is present and expand it.
+Then verify the RefineKit toolbar is present and expand it.
 
 ## Critical: Shadow DOM Access
 
-All Refiner UI lives inside a Shadow DOM on `#refiner-host` with `mode: 'open'`. Every selector must go through the shadow root. Use this helper pattern in all `eval` commands:
+All RefineKit UI lives inside a Shadow DOM on `#refinekit-host` with `mode: 'open'`. Every selector must go through the shadow root. Use this helper pattern in all `eval` commands:
 
 ```javascript
-const sr = document.querySelector('#refiner-host').shadowRoot;
+const sr = document.querySelector('#refinekit-host').shadowRoot;
 ```
 
-**Important:** `agent-browser snapshot -i` will NOT see elements inside Shadow DOM. Use `eval` for all Refiner UI interactions. Snapshots are only useful for identifying **page elements** (light DOM) to annotate.
+**Important:** `agent-browser snapshot -i` will NOT see elements inside Shadow DOM. Use `eval` for all RefineKit UI interactions. Snapshots are only useful for identifying **page elements** (light DOM) to annotate.
 
 ## Toolbar Verification
 
 ```bash
-# 1. Check Refiner is installed on the page
-agent-browser eval "document.querySelector('#refiner-host') ? 'refiner found' : 'NOT FOUND'"
-# If "NOT FOUND": Refiner is not installed — stop and tell the user to run /refiner first
+# 1. Check RefineKit is installed on the page
+agent-browser eval "document.querySelector('#refinekit-host') ? 'refinekit found' : 'NOT FOUND'"
+# If "NOT FOUND": RefineKit is not installed — stop and tell the user to run /refinekit first
 
 # 2. Check if toolbar is expanded (data-collapsed="false" means expanded)
-agent-browser eval "document.querySelector('#refiner-host').shadowRoot.querySelector('[data-refiner-toolbar]').getAttribute('data-collapsed') === 'false' ? 'expanded' : 'collapsed'"
+agent-browser eval "document.querySelector('#refinekit-host').shadowRoot.querySelector('[data-refinekit-toolbar]').getAttribute('data-collapsed') === 'false' ? 'expanded' : 'collapsed'"
 
 # 3. Expand ONLY if collapsed (clicking when already expanded collapses it)
-agent-browser eval "((sr) => { const tb = sr.querySelector('[data-refiner-toolbar]'); if (tb.getAttribute('data-collapsed') === 'false') return 'already expanded'; sr.querySelector('.toolbar-toggle-btn').click(); return 'expanding'; })(document.querySelector('#refiner-host').shadowRoot)"
+agent-browser eval "((sr) => { const tb = sr.querySelector('[data-refinekit-toolbar]'); if (tb.getAttribute('data-collapsed') === 'false') return 'already expanded'; sr.querySelector('.toolbar-toggle-btn').click(); return 'expanding'; })(document.querySelector('#refinekit-host').shadowRoot)"
 
 # 4. Verify: take a snapshot to confirm page is loaded
 agent-browser snapshot -i
@@ -81,13 +81,13 @@ agent-browser mouse up left
 
 # 5. Wait a beat for dialog to appear, then fill via eval
 #    (Dialog is in Shadow DOM — snapshots won't see it)
-agent-browser eval "((sr) => { const ta = sr.querySelector('.dialog-textarea'); if (!ta) return 'NO DIALOG'; ta.value = 'Your critique here'; ta.dispatchEvent(new Event('input')); return 'filled'; })(document.querySelector('#refiner-host').shadowRoot)"
+agent-browser eval "((sr) => { const ta = sr.querySelector('.dialog-textarea'); if (!ta) return 'NO DIALOG'; ta.value = 'Your critique here'; ta.dispatchEvent(new Event('input')); return 'filled'; })(document.querySelector('#refinekit-host').shadowRoot)"
 
 # 6. Submit by clicking the Add button via eval
-agent-browser eval "document.querySelector('#refiner-host').shadowRoot.querySelector('.dialog-btn-add').click(); 'submitted'"
+agent-browser eval "document.querySelector('#refinekit-host').shadowRoot.querySelector('.dialog-btn-add').click(); 'submitted'"
 
 # 7. Verify the annotation was added
-agent-browser eval "document.querySelector('#refiner-host').shadowRoot.querySelectorAll('[data-annotation-marker]').length"
+agent-browser eval "document.querySelector('#refinekit-host').shadowRoot.querySelectorAll('[data-annotation-marker]').length"
 # Should return the expected count (1 after first, 2 after second, etc.)
 ```
 
@@ -97,10 +97,10 @@ The overlay may have been dismissed or the toolbar collapsed. Check and recover:
 
 ```bash
 # Check if dialog is visible
-agent-browser eval "((sr) => sr.querySelector('.refiner-dialog')?.classList.contains('hidden') === false ? 'visible' : 'hidden')(document.querySelector('#refiner-host').shadowRoot)"
+agent-browser eval "((sr) => sr.querySelector('.refinekit-dialog')?.classList.contains('hidden') === false ? 'visible' : 'hidden')(document.querySelector('#refinekit-host').shadowRoot)"
 
 # If hidden, check toolbar is still expanded, then retry the click
-agent-browser eval "((sr) => { const tb = sr.querySelector('[data-refiner-toolbar]'); if (tb.getAttribute('data-collapsed') === 'true') { sr.querySelector('.toolbar-toggle-btn').click(); return 're-expanded'; } return 'toolbar ok'; })(document.querySelector('#refiner-host').shadowRoot)"
+agent-browser eval "((sr) => { const tb = sr.querySelector('[data-refinekit-toolbar]'); if (tb.getAttribute('data-collapsed') === 'true') { sr.querySelector('.toolbar-toggle-btn').click(); return 're-expanded'; } return 'toolbar ok'; })(document.querySelector('#refinekit-host').shadowRoot)"
 ```
 
 ### Building CSS selectors from snapshots
@@ -166,10 +166,10 @@ After all annotations are placed:
 
 ```bash
 # Get the total annotation count
-agent-browser eval "document.querySelector('#refiner-host').shadowRoot.querySelectorAll('[data-annotation-marker]').length"
+agent-browser eval "document.querySelector('#refinekit-host').shadowRoot.querySelectorAll('[data-annotation-marker]').length"
 
 # Optionally copy annotations to clipboard for the user
-agent-browser eval "window.__refiner.copyAnnotations(); 'copied to clipboard'"
+agent-browser eval "window.__refinekit.copyAnnotations(); 'copied to clipboard'"
 
 # Take a final screenshot so the user can see all markers
 agent-browser screenshot
@@ -182,7 +182,7 @@ Summarize the annotations you added and ask if the user wants you to address any
 | Problem | Cause | Fix |
 |---------|-------|-----|
 | "Browser not launched" | Stale session from previous run | `agent-browser close 2>/dev/null` then retry open |
-| Refiner not found on page | Not installed | Run `/refiner` to set it up first |
+| RefineKit not found on page | Not installed | Run `/refinekit` to set it up first |
 | No dialog after clicking | Toolbar collapsed or settings panel open | Re-expand toolbar, close settings via eval, retry |
 | "NO DIALOG" from eval | Click didn't register on overlay | Retry coordinate click — ensure overlay is visible |
 | Add button stays disabled | Text not filled or `input` event not dispatched | Re-run the fill eval with `dispatchEvent(new Event('input'))` |
@@ -201,14 +201,14 @@ Summarize the annotations you added and ask if the user wants you to address any
 | `snapshot -i \| head -50` | Dialog refs won't be visible anyway (Shadow DOM) | Use `eval` for all Shadow DOM interaction |
 | `click @ref` on overlay | Click goes through to real DOM, bypasses overlay | Use `mouse move` -> `mouse down left` -> `mouse up left` |
 
-**Rule of thumb**: Use `snapshot -i` to find **page elements** to target. Use `eval` for **all Refiner UI** interaction.
+**Rule of thumb**: Use `snapshot -i` to find **page elements** to target. Use `eval` for **all RefineKit UI** interaction.
 
 ## Install
 
 The skill must be symlinked into `~/.claude/skills/` for Claude Code to discover it:
 
 ```bash
-ln -sf "$(pwd)/skills/refiner-self-driving" ~/.claude/skills/refiner-self-driving
+ln -sf "$(pwd)/skills/refinekit-self-driving" ~/.claude/skills/refinekit-self-driving
 ```
 
-Restart Claude Code after installing. Verify with `/refiner-self-driving`.
+Restart Claude Code after installing. Verify with `/refinekit-self-driving`.

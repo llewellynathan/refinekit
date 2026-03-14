@@ -22,14 +22,14 @@ Add the refinekit annotation toolbar to this project.
    - If no HTML files found, ask the user to provide a path
 
 2. **Check if already installed**
-   - For each target file, search for `refinekit` or `refiner.js` script tags
+   - For each target file, search for `refinekit` or `refinekit.js` script tags
    - Skip any file that already has it and tell the user
 
 3. **Add the script tag**
 
    Add this before the closing `</body>` tag in each target file:
    ```html
-   <script src="https://unpkg.com/refinekit/dist/refiner.js"></script>
+   <script src="https://unpkg.com/refinekit/dist/refinekit.js"></script>
    ```
 
 4. **Confirm setup**
@@ -54,4 +54,4 @@ Add the refinekit annotation toolbar to this project.
 - No framework required — works with plain HTML/CSS
 - "Block" mode prevents accidental page interactions while annotating
 - `Cmd+Enter` / `Ctrl+Enter` submits an annotation from the dialog
-- Access the refinekit instance programmatically via `window.__refiner`
+- Access the refinekit instance programmatically via `window.__refinekit`

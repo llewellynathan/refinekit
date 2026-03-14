@@ -3,7 +3,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import type { Store } from './store.js';
 
-export class RefinerMcpServer {
+export class RefineKitMcpServer {
   private mcp: McpServer;
 
   constructor(private store: Store) {
@@ -18,7 +18,7 @@ export class RefinerMcpServer {
   private registerTools(): void {
     // List sessions
     this.mcp.tool(
-      'refiner_list_sessions',
+      'refinekit_list_sessions',
       'List all annotation sessions. Each session represents a page that has been annotated.',
       {},
       async () => {
@@ -34,7 +34,7 @@ export class RefinerMcpServer {
 
     // Get all pending annotations
     this.mcp.tool(
-      'refiner_get_all_pending',
+      'refinekit_get_all_pending',
       'Get all unresolved annotations across all sessions. Returns annotations with their CSS selectors, critique text, and metadata.',
       {},
       async () => {
@@ -52,7 +52,7 @@ export class RefinerMcpServer {
 
     // Resolve an annotation
     this.mcp.tool(
-      'refiner_resolve',
+      'refinekit_resolve',
       'Mark an annotation as resolved after addressing the feedback. Provide a summary of what was changed.',
       {
         annotationId: z.string().describe('The annotation ID to resolve'),
@@ -77,7 +77,7 @@ export class RefinerMcpServer {
 
     // Dismiss an annotation
     this.mcp.tool(
-      'refiner_dismiss',
+      'refinekit_dismiss',
       'Dismiss an annotation without addressing it. Provide a reason for dismissal.',
       {
         annotationId: z.string().describe('The annotation ID to dismiss'),
@@ -102,7 +102,7 @@ export class RefinerMcpServer {
 
     // Watch for new annotations (long-poll)
     this.mcp.tool(
-      'refiner_watch_annotations',
+      'refinekit_watch_annotations',
       'Block until a new annotation is added, then return it. Use this in a loop to continuously watch for design feedback. Times out after 30 seconds if no annotations arrive.',
       {},
       async () => {
@@ -136,6 +136,6 @@ export class RefinerMcpServer {
   async start(): Promise<void> {
     const transport = new StdioServerTransport();
     await this.mcp.connect(transport);
-    console.error('Refiner MCP server started on stdio');
+    console.error('RefineKit MCP server started on stdio');
   }
 }

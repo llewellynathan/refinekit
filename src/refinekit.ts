@@ -1,4 +1,4 @@
-import { RefinerOptions } from './types';
+import { RefineKitOptions } from './types';
 import { STYLES } from './styles';
 import { AnnotationStore } from './annotation-store';
 import { Toolbar } from './toolbar';
@@ -9,7 +9,7 @@ import { SettingsPanel } from './settings';
 import { generateSelector } from './selector';
 import { McpBridge } from './mcp-bridge';
 
-export class Refiner {
+export class RefineKit {
   private host: HTMLDivElement;
   private shadow: ShadowRoot;
   private store: AnnotationStore;
@@ -23,10 +23,10 @@ export class Refiner {
   private currentRect: DOMRect | null = null;
   private clearOnCopy = false;
 
-  constructor(options: RefinerOptions = {}) {
+  constructor(options: RefineKitOptions = {}) {
     // Create shadow host
     this.host = document.createElement('div');
-    this.host.id = 'refiner-host';
+    this.host.id = 'refinekit-host';
     this.shadow = this.host.attachShadow({ mode: 'open' });
 
     // Inject styles

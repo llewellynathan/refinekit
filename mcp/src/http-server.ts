@@ -20,7 +20,7 @@ export class HttpServer {
   start(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.server.listen(this.port, () => {
-        console.log(`Refiner HTTP server listening on http://localhost:${this.port}`);
+        console.log(`RefineKit HTTP server listening on http://localhost:${this.port}`);
         resolve();
       });
       this.server.on('error', reject);

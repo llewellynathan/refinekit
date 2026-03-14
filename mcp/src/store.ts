@@ -10,7 +10,7 @@ export class Store {
   private listeners: Set<(event: string, data: unknown) => void> = new Set();
 
   constructor(dbPath?: string) {
-    const resolvedPath = dbPath ?? path.join(os.homedir(), '.refiner', 'store.db');
+    const resolvedPath = dbPath ?? path.join(os.homedir(), '.refinekit', 'store.db');
 
     if (resolvedPath !== ':memory:') {
       fs.mkdirSync(path.dirname(resolvedPath), { recursive: true });

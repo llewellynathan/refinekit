@@ -5,13 +5,13 @@ export default {
   input: 'src/index.ts',
   output: [
     {
-      file: 'dist/refiner.js',
+      file: 'dist/refinekit.js',
       format: 'iife',
-      name: 'Refiner',
+      name: 'RefineKit',
       sourcemap: true,
     },
     {
-      file: 'dist/refiner.mjs',
+      file: 'dist/refinekit.mjs',
       format: 'es',
       sourcemap: true,
     },

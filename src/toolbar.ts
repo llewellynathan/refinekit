@@ -17,8 +17,8 @@ export class Toolbar {
 
   constructor(private root: ShadowRoot) {
     this.el = document.createElement('div');
-    this.el.className = 'refiner-toolbar';
-    this.el.setAttribute('data-refiner-toolbar', '');
+    this.el.className = 'refinekit-toolbar';
+    this.el.setAttribute('data-refinekit-toolbar', '');
     this.el.setAttribute('data-collapsed', 'true');
     this.render();
     root.appendChild(this.el);

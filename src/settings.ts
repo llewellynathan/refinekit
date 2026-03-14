@@ -40,7 +40,7 @@ export class SettingsPanel {
     header.className = 'settings-header';
     const title = document.createElement('span');
     title.className = 'settings-title';
-    title.textContent = 'reFiner';
+    title.textContent = 'refinekit';
     const version = document.createElement('span');
     version.className = 'settings-version';
     version.textContent = 'v0.1.0';

@@ -7,7 +7,7 @@ export interface Annotation {
   resolved: boolean;
 }
 
-export interface RefinerOptions {
+export interface RefineKitOptions {
   enabled?: boolean;
   position?: 'left' | 'right';
   mcpPort?: number;

@@ -1,7 +1,7 @@
 {
   "name": "refinekit-mcp",
   "version": "0.1.0",
-  "description": "MCP server for Refiner — real-time annotation sync between browser and AI agents",
+  "description": "MCP server for RefineKit — real-time annotation sync between browser and AI agents",
   "license": "MIT",
   "type": "module",
   "bin": {
