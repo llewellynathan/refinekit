@@ -7,6 +7,8 @@ export class Toolbar {
   private copyBtn!: HTMLElement;
   private clearBtn!: HTMLElement;
   private toggleBtn!: HTMLElement;
+  private inspectBtn!: HTMLElement;
+  private inspectActive = false;
   private settingsOpen = false;
 
   onCopy?: () => void;
@@ -14,6 +16,7 @@ export class Toolbar {
   onSettings?: () => void;
   onCollapse?: () => void;
   onExpand?: () => void;
+  onInspectToggle?: (active: boolean) => void;
 
   constructor(private root: ShadowRoot) {
     this.el = document.createElement('div');
@@ -80,6 +83,18 @@ export class Toolbar {
     );
     this.clearBtn.classList.add('disabled');
     this.innerEl.appendChild(this.clearBtn);
+
+    // Inspect
+    this.inspectBtn = this.createBtn(
+      `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+      'Inspect element',
+      () => {
+        this.inspectActive = !this.inspectActive;
+        this.inspectBtn.classList.toggle('active', this.inspectActive);
+        this.onInspectToggle?.(this.inspectActive);
+      },
+    );
+    this.innerEl.appendChild(this.inspectBtn);
 
     // Settings
     this.innerEl.appendChild(this.createBtn(
@@ -158,6 +173,11 @@ export class Toolbar {
     } else {
       this.onExpand?.();
     }
+  }
+
+  setInspectActive(active: boolean): void {
+    this.inspectActive = active;
+    this.inspectBtn.classList.toggle('active', active);
   }
 
   setSettingsOpen(open: boolean): void {

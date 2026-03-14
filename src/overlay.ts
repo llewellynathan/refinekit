@@ -6,7 +6,10 @@ export class Overlay {
   private currentTarget: Element | null = null;
   private highlightColor = '#7C3AED';
 
+  inspectMode = false;
+
   onClick?: (target: Element, rect: DOMRect) => void;
+  onHoverChange?: (target: Element | null, rect: DOMRect | null) => void;
 
   constructor(private root: ShadowRoot) {
     this.el = document.createElement('div');
@@ -45,6 +48,7 @@ export class Overlay {
     if (target && target !== this.currentTarget) {
       this.currentTarget = target;
       this.showHighlight(target);
+      this.onHoverChange?.(target, target.getBoundingClientRect());
     }
   };
 
@@ -54,6 +58,8 @@ export class Overlay {
 
     e.preventDefault();
     e.stopPropagation();
+
+    if (this.inspectMode) return;
 
     const target = this.getElementAt(e.clientX, e.clientY);
     if (target) {
@@ -93,11 +99,13 @@ export class Overlay {
     this.highlight.style.width = `${rect.width + 4}px`;
     this.highlight.style.height = `${rect.height + 4}px`;
     this.highlight.style.borderColor = this.highlightColor;
+    this.highlight.style.borderStyle = this.inspectMode ? 'solid' : 'dashed';
   }
 
   private hideHighlight(): void {
     this.highlight.style.display = 'none';
     this.currentTarget = null;
+    this.onHoverChange?.(null, null);
   }
 
   setHighlightColor(color: string): void {
