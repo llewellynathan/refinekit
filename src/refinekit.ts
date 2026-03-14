@@ -79,6 +79,10 @@ export class RefineKit {
       }
     };
 
+    this.overlay.onInspectClick = (target, rect) => {
+      this.inspectPanel.select(target, rect);
+    };
+
     this.overlay.onHoverChange = (target, rect) => {
       if (this.inspectMode && target && rect) {
         this.inspectPanel.show(target, rect);

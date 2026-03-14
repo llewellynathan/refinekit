@@ -16,6 +16,7 @@ export class InspectPanel {
   private content: HTMLElement;
   private lastTarget: Element | null = null;
   private visible = false;
+  private locked = false;
 
   constructor(private root: ShadowRoot) {
     this.el = document.createElement('div');
@@ -28,6 +29,8 @@ export class InspectPanel {
   }
 
   show(target: Element, rect: DOMRect): void {
+    if (this.locked) return;
+
     if (target === this.lastTarget) {
       this.position(rect);
       return;
@@ -46,7 +49,30 @@ export class InspectPanel {
   hide(): void {
     this.el.classList.add('hidden');
     this.visible = false;
+    this.locked = false;
     this.lastTarget = null;
+  }
+
+  select(target: Element, rect: DOMRect): void {
+    if (this.locked && target === this.lastTarget) {
+      // Clicking same element unlocks
+      this.unlock();
+      return;
+    }
+    // Lock to this element
+    this.locked = false; // allow show() to update
+    this.show(target, rect);
+    this.locked = true;
+    this.el.classList.add('locked');
+  }
+
+  unlock(): void {
+    this.locked = false;
+    this.el.classList.remove('locked');
+  }
+
+  isLocked(): boolean {
+    return this.locked;
   }
 
   isVisible(): boolean {

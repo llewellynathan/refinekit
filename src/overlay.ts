@@ -9,6 +9,7 @@ export class Overlay {
   inspectMode = false;
 
   onClick?: (target: Element, rect: DOMRect) => void;
+  onInspectClick?: (target: Element, rect: DOMRect) => void;
   onHoverChange?: (target: Element | null, rect: DOMRect | null) => void;
 
   constructor(private root: ShadowRoot) {
@@ -59,11 +60,13 @@ export class Overlay {
     e.preventDefault();
     e.stopPropagation();
 
-    if (this.inspectMode) return;
-
     const target = this.getElementAt(e.clientX, e.clientY);
-    if (target) {
-      const rect = target.getBoundingClientRect();
+    if (!target) return;
+
+    const rect = target.getBoundingClientRect();
+    if (this.inspectMode) {
+      this.onInspectClick?.(target, rect);
+    } else {
       this.onClick?.(target, rect);
     }
   };
