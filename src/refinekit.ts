@@ -8,6 +8,7 @@ import { AnnotationMarkers } from './annotation-marker';
 import { SettingsPanel } from './settings';
 import { generateSelector } from './selector';
 import { McpBridge } from './mcp-bridge';
+import { InspectPanel } from './inspect-panel';
 
 export class RefineKit {
   private host: HTMLDivElement;
@@ -18,10 +19,12 @@ export class RefineKit {
   private dialog: AnnotationDialog;
   private markers: AnnotationMarkers;
   private settings: SettingsPanel;
+  private inspectPanel: InspectPanel;
   private mcpBridge: McpBridge | null = null;
   private currentTarget: Element | null = null;
   private currentRect: DOMRect | null = null;
   private clearOnCopy = false;
+  private inspectMode = false;
 
   constructor(options: RefineKitOptions = {}) {
     // Create shadow host
@@ -41,6 +44,7 @@ export class RefineKit {
     this.overlay = new Overlay(this.shadow);
     this.dialog = new AnnotationDialog(this.shadow);
     this.markers = new AnnotationMarkers(this.shadow, this.store);
+    this.inspectPanel = new InspectPanel(this.shadow);
 
     // Wire up toolbar
     this.toolbar.onCopy = () => this.copyAnnotations();
@@ -54,10 +58,33 @@ export class RefineKit {
       this.settings.hide();
       this.toolbar.setSettingsOpen(false);
       this.overlay.setEnabled(false);
+      this.inspectMode = false;
+      this.overlay.inspectMode = false;
+      this.inspectPanel.hide();
+      this.toolbar.setInspectActive(false);
     };
 
     this.toolbar.onExpand = () => {
       this.overlay.setEnabled(true);
+    };
+
+    this.toolbar.onInspectToggle = (active) => {
+      this.inspectMode = active;
+      this.overlay.inspectMode = active;
+      if (!active) this.inspectPanel.hide();
+      if (active) {
+        this.settings.hide();
+        this.toolbar.setSettingsOpen(false);
+        this.dialog.hide();
+      }
+    };
+
+    this.overlay.onHoverChange = (target, rect) => {
+      if (this.inspectMode && target && rect) {
+        this.inspectPanel.show(target, rect);
+      } else if (this.inspectMode) {
+        this.inspectPanel.hide();
+      }
     };
 
     // Wire up settings
@@ -68,7 +95,7 @@ export class RefineKit {
       this.overlay.setHighlightColor(s.markerColor);
     };
 
-    // Wire up overlay click
+    // Wire up overlay click (disabled in inspect mode via overlay.ts)
     this.overlay.onClick = (target, rect) => {
       if (this.settings.isVisible()) {
         this.settings.hide();

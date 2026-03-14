@@ -575,4 +575,116 @@ export const STYLES = `
   .settings-mcp-dot.disconnected {
     background: #6B7280;
   }
+
+  /* ── Inspect Panel ── */
+
+  .inspect-panel {
+    position: fixed;
+    width: 280px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 13;
+    background: #1a1a2e;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    color: #e8e8f0;
+    animation: dialog-in 0.15s ease;
+  }
+
+  .inspect-panel.hidden {
+    display: none;
+  }
+
+  .inspect-element-tag {
+    font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    color: #2563EB;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .inspect-element-selector {
+    font-size: 11px;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    color: #6b6b80;
+    margin-bottom: 12px;
+    word-break: break-all;
+  }
+
+  .inspect-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b6b80;
+    margin-bottom: 6px;
+    margin-top: 12px;
+  }
+
+  .inspect-section-title:first-child {
+    margin-top: 0;
+  }
+
+  .inspect-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.1s;
+    gap: 12px;
+  }
+
+  .inspect-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .inspect-row.copied {
+    background: rgba(37, 99, 235, 0.2);
+  }
+
+  .inspect-row-label {
+    font-size: 11px;
+    color: #6b6b80;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .inspect-row-value {
+    font-size: 12px;
+    color: #e8e8f0;
+    font-weight: 500;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .inspect-color-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .inspect-panel::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .inspect-panel::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .inspect-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
 `;
