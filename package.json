@@ -1,6 +1,6 @@
 {
   "name": "refinekit",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Visual annotation overlay for HTML/CSS design critique",
   "main": "dist/refinekit.js",
   "module": "dist/refinekit.mjs",
